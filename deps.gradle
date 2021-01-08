@@ -1,0 +1,113 @@
+ext {
+    versions = [
+            buildGradle: '4.1.1',
+            kotlin     : '1.4.21',
+            navigation : '2.3.2',
+            dagger     : '2.30.1',
+            daggerHilt : '2.30.1-alpha',
+            androidHilt: '1.0.0-alpha02',
+            retrofit   : '2.9.0',
+            lifecycle  : '2.2.0',
+            glide      : '4.11.0',
+            room       : '2.3.0-alpha04',
+            material   : '1.3.0-beta01',
+            appCompat  : '1.3.0-alpha02',
+            coroutine  : '1.4.1',
+            okHttp     : '4.9.0',
+            coreKtx    : '1.5.0-alpha05',
+            activityKtx: '1.2.0-rc01',
+            fragmentKtx: '1.3.0-rc01',
+            pagingKtx  : '3.0.0-alpha11'
+    ]
+
+    deps = [
+            // Plugin
+            pluginBuildGradle       : "com.android.tools.build:gradle:${versions.buildGradle}",
+            pluginKotlinGradle      : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+            pluginDaggerHilt        : "com.google.dagger:hilt-android-gradle-plugin:${versions.daggerHilt}",
+            pluginSafeArgs          : "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}",
+
+            // Kotlin
+            kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+
+            // Coroutine
+            coroutineCore           : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutine}",
+            coroutineAndroid        : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutine}",
+            coroutineTest           : "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutine}",
+
+            // AndroidX
+            appCompat               : "androidx.appcompat:appcompat:${versions.appCompat}",
+            coreKtx                 : "androidx.core:core-ktx:${versions.coreKtx}",
+            activityKtx             : "androidx.activity:activity-ktx:${versions.activityKtx}",
+            fragmentKtx             : "androidx.fragment:fragment-ktx:${versions.fragmentKtx}",
+            pagingKtx               : "androidx.paging:paging-runtime-ktx:${versions.pagingKtx}",
+
+            // Navigation
+            navCommonKtx            : "androidx.navigation:navigation-common-ktx:${versions.navigation}",
+            navRuntimeKtx           : "androidx.navigation:navigation-runtime-ktx:${versions.navigation}",
+            navFragmentKtx          : "androidx.navigation:navigation-fragment-ktx:${versions.navigation}",
+            navUiKtx                : "androidx.navigation:navigation-ui-ktx:${versions.navigation}",
+            navDfm                  : "androidx.navigation:navigation-dynamic-features-fragment:${versions.navigation}",
+
+            // Lifecycle
+            lifecycleRuntime        : "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}",
+            lifecycleExtensions     : "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}",
+            lifecycleCompiler       : "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}",
+            viewmodelKtx            : "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}",
+            liveDataKtx             : "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}",
+
+            // Dependency Injection
+            dagger                  : "com.google.dagger:dagger:${versions.dagger}",
+            daggerCompiler          : "com.google.dagger:dagger-compiler:${versions.dagger}",
+            daggerHilt              : "com.google.dagger:hilt-android:${versions.daggerHilt}",
+            daggerHiltCompiler      : "com.google.dagger:hilt-android-compiler:${versions.daggerHilt}",
+            daggerHiltTesting       : "com.google.dagger:hilt-android-testing:${versions.daggerHilt}",
+            androidHilt             : "androidx.hilt:hilt-common:${versions.androidHilt}",
+            androidHiltViewModel    : "androidx.hilt:hilt-lifecycle-viewmodel:${versions.androidHilt}",
+            androidHiltCompiler     : "androidx.hilt:hilt-compiler:${versions.androidHilt}",
+
+            // Network
+            retrofit                : "com.squareup.retrofit2:retrofit:${versions.retrofit}",
+            retrofitMoshi           : "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
+            okHttp                  : "com.squareup.okhttp3:okhttp:${versions.okHttp}",
+            okHttpLoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okHttp}",
+
+            // Database
+            roomRuntime             : "androidx.room:room-runtime:${versions.room}",
+            roomCompiler            : "androidx.room:room-compiler:${versions.room}",
+            roomKtx                 : "androidx.room:room-ktx:${versions.room}",
+
+            // UI
+            material                : "com.google.android.material:material:${versions.material}",
+            constraint              : "androidx.constraintlayout:constraintlayout:2.0.4",
+            swiperefresh            : "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0",
+            gridlayout              : "androidx.gridlayout:gridlayout:1.0.0",
+
+            // Libraries
+            glide                   : "com.github.bumptech.glide:glide:${versions.glide}",
+            glideCompiler           : "com.github.bumptech.glide:compiler:${versions.glide}",
+            shimmer                 : "com.facebook.shimmer:shimmer:0.5.0",
+            kenBurnsView            : "com.flaviofaria:kenburnsview:1.0.7",
+            percentageView          : "com.ramijemli.percentagechartview:percentagechartview:0.3.1",
+
+            // Test
+            junit                   : "junit:junit:4.13.1",
+            androidxJunit           : "androidx.test.ext:junit:1.1.2",
+            androidxEspresso        : "androidx.test.espresso:espresso-core:3.3.0",
+            androidXAnnotation      : "androidx.annotation:annotation:1.1.0",
+            mockitoCore             : "org.mockito:mockito-core:3.6.28",
+            mockitoInline           : "org.mockito:mockito-inline:3.6.28",
+            mockitoKotlin           : "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0",
+            coreTesting             : "androidx.arch.core:core-testing:2.1.0",
+            testMonitor             : "androidx.test:monitor:1.3.0",
+            idlingResource          : "androidx.test.espresso:espresso-idling-resource:3.4.0-alpha02",
+
+            // Instrument Test
+            extJunit                : "androidx.test.ext:junit:1.1.2",
+            espressoCore            : "androidx.test.espresso:espresso-core:3.4.0-alpha02",
+            espressoContrib         : "androidx.test.espresso:espresso-contrib:3.4.0-alpha02",
+            rules                   : "androidx.test:rules:1.3.0",
+            runner                  : "androidx.test:runner:1.3.0",
+
+    ]
+}

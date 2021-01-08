@@ -1,0 +1,92 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+apply from: '../deps.gradle'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        buildConfigField 'String', 'BASE_URL', '"https://api.themoviedb.org/3/"'
+        buildConfigField 'String', 'BASE_IMAGE_URL', '"https://image.tmdb.org/t/p/w500"'
+        buildConfigField 'String', 'API_KEY', '"56122b0993fab6d548a8dc8b5197fd44"'
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    // androidx
+    api deps.kotlin
+    api deps.appCompat
+    api deps.coreKtx
+    api deps.pagingKtx
+    api deps.activityKtx
+    api deps.fragmentKtx
+    api deps.viewmodelKtx
+    api deps.liveDataKtx
+
+    // ui
+    api deps.material
+    api deps.constraint
+
+    // navigation
+    api deps.navCommonKtx
+    api deps.navRuntimeKtx
+    api deps.navFragmentKtx
+    api deps.navUiKtx
+    api deps.navDfm
+
+    // network
+    implementation deps.retrofit
+    implementation deps.retrofitMoshi
+    api deps.okHttp
+    debugImplementation deps.okHttpLoggingInterceptor
+
+    // database
+    api deps.roomKtx
+    kapt deps.roomCompiler
+
+    // libraries
+    api deps.glide
+    kapt deps.glideCompiler
+
+    // dependency injection
+    implementation deps.dagger
+    kapt deps.daggerCompiler
+    implementation deps.daggerHilt
+    kapt deps.daggerHiltCompiler
+    implementation deps.androidHilt
+    implementation deps.androidHiltViewModel
+    kapt deps.androidHiltCompiler
+
+    // test
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

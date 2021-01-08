@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Movie Catalogue</string>
+    <string name="title_movie">Movie</string>
+    <string name="title_tv_show">Tv Show</string>
+    <string name="title_search">Search</string>
+    <string name="title_favorite">Favorite</string>
+
+    <string name="genre_label">GENRES</string>
+    <string name="hint_search">Search for a movie, tv show…</string>
+
+    <string name="cd_movie_background">Movie Picture</string>
+    <string name="cd_favorite_button">Favorite Button</string>
+    <string name="view_item">View Item.</string>
+    <string name="vote_count">(%,d)</string>
+
+    <string name="empty_movie_message">There are no movies that matched your query.</string>
+    <string name="empty_tv_message">There are no tv shows that matched your query.</string>
+
+    <string name="oops..">Oops…</string>
+    <string name="hello">Hello…</string>
+    <string name="add_favorite">Search and add now.</string>
+    <string name="find_movie">Let\'s find movies.</string>
+    <string name="find_tv_show">Let\'s find tv show.</string>
+
+    <string name="no_favorite_movie">No favorite movie.</string>
+    <string name="no_favorite_tv_show">No favorite tv show.</string>
+
+    <string name="retry">RETRY</string>
+    <string name="rating_label">RATING</string>
+    <string name="summary_label">SUMMARY</string>
+    <string name="share">SHARE</string>
+    <string name="status_label">STATUS</string>
+    <string name="no_overview">No overview.</string>
+
+    <string name="share_message">\"%s\" \n\nVisit: https://www.themoviedb.org/</string>
+
+</resources>
