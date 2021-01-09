@@ -12,22 +12,22 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.dimasferians.moviecatalogue.R
-import id.dimasferians.moviecatalogue.core.domain.model.TvShow
-import id.dimasferians.moviecatalogue.databinding.LayoutMovieTvBinding
+import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
+import id.dimasferians.moviecatalogue.core.domain.model.Movie
 import id.dimasferians.moviecatalogue.utils.hide
 import id.dimasferians.moviecatalogue.utils.show
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FavoriteTvFragment : Fragment() {
+class FavoriteMovieFragment : Fragment() {
 
     private var _binding: LayoutMovieTvBinding? = null
     private val binding
         get() = _binding!!
 
     private val viewModel: FavoriteViewModel by viewModels()
-    private lateinit var tvShowAdapter: FavoriteTvShowAdapter
+    private lateinit var movieAdapter: FavoriteMovieAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,9 +47,9 @@ class FavoriteTvFragment : Fragment() {
 
     private fun initData() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.favoriteTvShow.collectLatest {
+            viewModel.favoriteMovie.collectLatest {
                 if (it.isNotEmpty()) {
-                    tvShowAdapter.setData(it)
+                    movieAdapter.setData(it)
                     binding.layoutEmpty.hide()
                     binding.rvMovieTv.show()
                 } else {
@@ -58,30 +58,32 @@ class FavoriteTvFragment : Fragment() {
                     binding.imgEmpty.setImageDrawable(
                         ContextCompat.getDrawable(
                             requireContext(),
-                            R.drawable.ic_playlist
+                            R.drawable.ic_netflix
                         )
                     )
-                    binding.messageTitle.text = getString(R.string.no_favorite_tv_show)
+                    binding.messageTitle.text = getString(R.string.no_favorite_movie)
                 }
             }
         }
     }
 
     private fun setupRecyclerView() {
-        tvShowAdapter = FavoriteTvShowAdapter { tv ->
-            navigateToMovieDetail(tv)
+        val onItemClicked: (Movie) -> Unit = { movie ->
+            navigateToMovieDetail(movie)
         }
-
+        movieAdapter = FavoriteMovieAdapter(onItemClicked)
         binding.rvMovieTv.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = tvShowAdapter
+            adapter = movieAdapter
             setHasFixedSize(true)
         }
     }
 
-    private fun navigateToMovieDetail(tv: TvShow) {
-        val action =
-            FavoriteFragmentDirections.actionNavigationFavoriteToDetailFragment(tv.id, "tv")
+    private fun navigateToMovieDetail(movie: Movie) {
+        val action = FavoriteFragmentDirections.actionNavigationFavoriteToDetailFragment(
+            movie.id,
+            "movie"
+        )
         findNavController().navigate(action)
     }
 
@@ -89,4 +91,5 @@ class FavoriteTvFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

@@ -8,16 +8,16 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import id.dimasferians.moviecatalogue.BuildConfig
 import id.dimasferians.moviecatalogue.R
-import id.dimasferians.moviecatalogue.core.domain.model.TvShow
-import id.dimasferians.moviecatalogue.databinding.ItemMovieTvBinding
+import id.dimasferians.moviecatalogue.core.databinding.ItemMovieTvBinding
+import id.dimasferians.moviecatalogue.core.domain.model.Movie
 
-class FavoriteTvShowAdapter(private val onItemClicked: (TvShow) -> Unit) :
-    RecyclerView.Adapter<FavoriteTvShowAdapter.ViewHolder>() {
+class FavoriteMovieAdapter(private val onItemClicked: (Movie) -> Unit) :
+    RecyclerView.Adapter<FavoriteMovieAdapter.ViewHolder>() {
 
-    private var tvShowList: List<TvShow> = emptyList()
+    private var movieList: List<Movie> = emptyList()
 
-    fun setData(tvShowList: List<TvShow>) {
-        this.tvShowList = tvShowList
+    fun setData(movieList: List<Movie>) {
+        this.movieList = movieList
         notifyDataSetChanged()
     }
 
@@ -27,20 +27,19 @@ class FavoriteTvShowAdapter(private val onItemClicked: (TvShow) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(tvShowList[position], onItemClicked)
+        holder.bind(movieList[position], onItemClicked)
     }
 
-    override fun getItemCount(): Int = tvShowList.size
+    override fun getItemCount(): Int = movieList.size
 
     class ViewHolder(private val itemBinding: ItemMovieTvBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-
-        fun bind(tvShow: TvShow, onItemClicked: (TvShow) -> Unit) {
+        fun bind(movie: Movie, onItemClicked: (Movie) -> Unit) {
             // i have tested that poster_path and overview in some case return null/blank
             Glide.with(itemBinding.container.context)
                 .load(
-                    if (tvShow.image == null) R.drawable.cover_placeholder else
-                        BuildConfig.BASE_IMAGE_URL + tvShow.image
+                    if (movie.image == null) R.drawable.cover_placeholder else
+                        BuildConfig.BASE_IMAGE_URL + movie.image
                 )
                 .apply(
                     RequestOptions()
@@ -51,17 +50,12 @@ class FavoriteTvShowAdapter(private val onItemClicked: (TvShow) -> Unit) :
 
             with(itemBinding) {
                 tvOverview.text =
-                    if (tvShow.overview != "") tvShow.overview else itemBinding.container.context.getString(
-                        R.string.no_overview
-                    )
-                tvTitle.text = tvShow.name
-                ratingBar.rating = tvShow.voteAverage.div(2).toFloat()
-                tvVoteCount.text =
-                    itemBinding.container.context.getString(R.string.vote_count, tvShow.voteCount)
+                    if (movie.overview != "") movie.overview else itemBinding.container.context.getString(R.string.no_overview)
+                tvTitle.text = movie.title
+                ratingBar.rating = movie.voteAverage.div(2).toFloat()
+                tvVoteCount.text = itemBinding.container.context.getString(R.string.vote_count, movie.voteCount)
             }
-
-            itemView.setOnClickListener { onItemClicked(tvShow) }
+            itemView.setOnClickListener { onItemClicked(movie) }
         }
-
     }
 }
