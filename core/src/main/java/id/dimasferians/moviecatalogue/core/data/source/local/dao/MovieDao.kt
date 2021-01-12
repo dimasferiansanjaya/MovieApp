@@ -1,6 +1,5 @@
 package id.dimasferians.moviecatalogue.core.data.source.local.dao
 
-import androidx.paging.PagingSource
 import androidx.room.*
 import id.dimasferians.moviecatalogue.core.data.source.local.entity.MovieEntity
 import kotlinx.coroutines.flow.Flow

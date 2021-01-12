@@ -16,7 +16,7 @@
         android:fullBackupContent="@xml/backup_descriptor"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".MainActivity"
             android:theme="@style/Theme.MovieCatalogue.NoActionBar"
             android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name">

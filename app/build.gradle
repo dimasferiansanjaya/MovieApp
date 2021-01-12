@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
 }
 
@@ -40,21 +39,19 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    dynamicFeatures = [':features:favorite']
 }
 
 dependencies {
 
     // Module
     implementation project(":core")
+    implementation project(":features:movie")
+    implementation project(":features:tv")
+    implementation project(":features:search")
+    implementation project(":features:detail")
 
-    // Hilt Dependency Injection
-    implementation 'com.google.dagger:hilt-android:2.30.1-alpha'
-    kapt 'com.google.dagger:hilt-android-compiler:2.30.1-alpha'
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02"
-    kapt "androidx.hilt:hilt-compiler:1.0.0-alpha02"
-    kaptAndroidTest "androidx.hilt:hilt-compiler:1.0.0-alpha02"
-
-    // Libraries
-    implementation deps.kenBurnsView
-    implementation deps.percentageView
+    // dependency injection
+    implementation deps.dagger
+    kapt deps.daggerCompiler
 }

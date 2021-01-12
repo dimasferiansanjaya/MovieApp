@@ -1,3 +1,8 @@
+include ':features:tv'
+include ':features:movie'
+include ':features:detail'
+include ':features:search'
+include ':features:favorite'
 rootProject.name = "Movie Catalogue"
 include ':core'
 include ':app'

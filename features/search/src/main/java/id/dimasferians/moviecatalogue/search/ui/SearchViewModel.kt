@@ -1,4 +1,4 @@
-package id.dimasferians.moviecatalogue.ui.search
+package id.dimasferians.moviecatalogue.search.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,13 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import id.dimasferians.movieapp.core.domain.usecase.MovieUseCase
+import id.dimasferians.moviecatalogue.core.domain.usecase.MovieUseCase
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
+import id.dimasferians.moviecatalogue.search.di.SearchScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@SearchScope
 class SearchViewModel @Inject constructor(private val movieUseCase: MovieUseCase) :
     ViewModel() {
 

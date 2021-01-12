@@ -1,10 +1,12 @@
-package id.dimasferians.moviecatalogue.ui.favorite
+package id.dimasferians.moviecatalogue.favorite.ui
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import id.dimasferians.movieapp.core.domain.usecase.MovieUseCase
+import id.dimasferians.moviecatalogue.core.domain.usecase.MovieUseCase
+import id.dimasferians.moviecatalogue.favorite.di.FavoriteScope
+import javax.inject.Inject
 
-class FavoriteViewModel @ViewModelInject constructor(movieUseCase: MovieUseCase) :
+@FavoriteScope
+class FavoriteViewModel @Inject constructor(movieUseCase: MovieUseCase) :
     ViewModel() {
 
     val favoriteMovie = movieUseCase.getFavoriteMovie()

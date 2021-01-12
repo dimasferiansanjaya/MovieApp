@@ -1,3 +1,7 @@
 package id.dimasferians.moviecatalogue.detail.di
 
-annotation class DetailScope()
+import javax.inject.Scope
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class DetailScope

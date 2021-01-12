@@ -1,4 +1,4 @@
-package id.dimasferians.moviecatalogue.ui.favorite
+package id.dimasferians.moviecatalogue.favorite.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

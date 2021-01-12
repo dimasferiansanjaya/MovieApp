@@ -1,4 +1,4 @@
-package id.dimasferians.moviecatalogue.utils
+package id.dimasferians.moviecatalogue.core.utils
 
 import android.view.View
 

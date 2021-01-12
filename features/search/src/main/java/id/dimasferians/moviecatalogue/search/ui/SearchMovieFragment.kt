@@ -1,6 +1,7 @@
-package id.dimasferians.moviecatalogue.ui.search
+package id.dimasferians.moviecatalogue.search.ui
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,15 +14,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import id.dimasferians.moviecatalogue.MovieApp
-import id.dimasferians.moviecatalogue.R
+import id.dimasferians.moviecatalogue.core.R
 import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
-import id.dimasferians.moviecatalogue.di.DaggerAppComponent
-import id.dimasferians.moviecatalogue.ui.movie.MovieLoadStateAdapter
-import id.dimasferians.moviecatalogue.ui.movie.MoviePagingAdapter
-import id.dimasferians.moviecatalogue.utils.hide
-import id.dimasferians.moviecatalogue.utils.show
+import id.dimasferians.moviecatalogue.core.ui.movie.MovieLoadStateAdapter
+import id.dimasferians.moviecatalogue.core.ui.movie.MoviePagingAdapter
+import id.dimasferians.moviecatalogue.core.utils.hide
+import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
+import id.dimasferians.moviecatalogue.core.utils.show
+import id.dimasferians.moviecatalogue.search.di.DaggerSearchComponent
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
@@ -36,7 +37,7 @@ class SearchMovieFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: SearchViewModel by activityViewModels {viewModelFactory}
+    private val viewModel: SearchViewModel by activityViewModels { viewModelFactory }
     private lateinit var movieAdapter: MoviePagingAdapter
 
     override fun onAttach(context: Context) {
@@ -61,8 +62,8 @@ class SearchMovieFragment : Fragment() {
     }
 
     private fun initDependencyInjection() {
-        DaggerAppComponent.factory()
-            .create(MovieApp.coreComponent)
+        DaggerSearchComponent.factory()
+            .create(provideCoreComponent())
             .inject(this)
     }
 
@@ -135,11 +136,8 @@ class SearchMovieFragment : Fragment() {
     }
 
     private fun navigateToMovieDetail(movie: Movie) {
-        val action = SearchFragmentDirections.actionNavigationSearchToDetailFragment(
-            movie.id,
-            "movie"
-        )
-        findNavController().navigate(action)
+        val uri = Uri.parse("movieapp://moviecatalogue/detail/${movie.id}/movie")
+        findNavController().navigate(uri)
     }
 
     override fun onDestroyView() {

@@ -4,8 +4,6 @@ ext {
             kotlin     : '1.4.21',
             navigation : '2.3.2',
             dagger     : '2.30.1',
-            daggerHilt : '2.30.1-alpha',
-            androidHilt: '1.0.0-alpha02',
             retrofit   : '2.9.0',
             lifecycle  : '2.2.0',
             glide      : '4.11.0',
@@ -57,14 +55,11 @@ ext {
             liveDataKtx             : "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}",
 
             // Dependency Injection
-            dagger                  : "com.google.dagger:dagger:${versions.dagger}",
-            daggerCompiler          : "com.google.dagger:dagger-compiler:${versions.dagger}",
-            daggerHilt              : "com.google.dagger:hilt-android:${versions.daggerHilt}",
-            daggerHiltCompiler      : "com.google.dagger:hilt-android-compiler:${versions.daggerHilt}",
-            daggerHiltTesting       : "com.google.dagger:hilt-android-testing:${versions.daggerHilt}",
-            androidHilt             : "androidx.hilt:hilt-common:${versions.androidHilt}",
-            androidHiltViewModel    : "androidx.hilt:hilt-lifecycle-viewmodel:${versions.androidHilt}",
-            androidHiltCompiler     : "androidx.hilt:hilt-compiler:${versions.androidHilt}",
+            dagger                : "com.google.dagger:dagger:${versions.dagger}",
+            daggerCompiler        : "com.google.dagger:dagger-compiler:${versions.dagger}",
+            daggerAndroid         : "com.google.dagger:dagger-android:${versions.dagger}",
+            daggerAndroidSupport  : "com.google.dagger:dagger-android-support:${versions.dagger}",
+            daggerAndroidProcessor: "com.google.dagger:dagger-android-processor:${versions.dagger}",
 
             // Network
             retrofit                : "com.squareup.retrofit2:retrofit:${versions.retrofit}",

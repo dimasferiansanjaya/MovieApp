@@ -1,4 +1,4 @@
-package id.dimasferians.moviecatalogue.ui.movie
+package id.dimasferians.moviecatalogue.core.ui.movie
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,8 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
-import id.dimasferians.moviecatalogue.R
-import id.dimasferians.moviecatalogue.databinding.LoadStateFooterBinding
+import id.dimasferians.moviecatalogue.core.R
+import id.dimasferians.moviecatalogue.core.databinding.LoadStateFooterBinding
 
 class MovieLoadStateAdapter(private val retry: () -> Unit) :
     LoadStateAdapter<MovieLoadStateAdapter.MovieLoadStateViewHolder>() {

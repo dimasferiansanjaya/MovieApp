@@ -2,8 +2,6 @@ package id.dimasferians.moviecatalogue.core.di
 
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import id.dimasferians.moviecatalogue.core.BuildConfig
 import id.dimasferians.moviecatalogue.core.data.source.remote.network.ApiService
 import okhttp3.Interceptor
@@ -15,11 +13,10 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
-object CoreNetworkModule {
+class CoreNetworkModule {
 
-    @Provides
     @Singleton
+    @Provides
     fun provideOkHttpClient(): OkHttpClient {
         val chainInterceptor = { chain: Interceptor.Chain ->
             // Injecting Api Key

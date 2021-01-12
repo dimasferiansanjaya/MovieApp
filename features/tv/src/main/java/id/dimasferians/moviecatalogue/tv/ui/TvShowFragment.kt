@@ -1,6 +1,7 @@
-package id.dimasferians.moviecatalogue.ui.tv
+package id.dimasferians.moviecatalogue.tv.ui
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import id.dimasferians.moviecatalogue.MovieApp
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowPagingAdapter
-import id.dimasferians.moviecatalogue.databinding.FragmentTvShowBinding
-import id.dimasferians.moviecatalogue.di.DaggerAppComponent
+import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
+import id.dimasferians.moviecatalogue.tv.databinding.FragmentTvShowBinding
+import id.dimasferians.moviecatalogue.tv.di.DaggerTvShowComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -55,8 +56,8 @@ class TvShowFragment : Fragment() {
     }
 
     private fun initDependencyInjection() {
-        DaggerAppComponent.factory()
-            .create(MovieApp.coreComponent)
+        DaggerTvShowComponent.factory()
+            .create(provideCoreComponent())
             .inject(this)
     }
 
@@ -85,9 +86,8 @@ class TvShowFragment : Fragment() {
     }
 
     private fun navigateToMovieDetail(tv: TvShow) {
-        val action =
-            TvShowFragmentDirections.actionNavigationTvShowToDetailFragment(tv.id, "tv")
-        findNavController().navigate(action)
+        val uri = Uri.parse("movieapp://moviecatalogue/detail/${tv.id}/tv")
+        findNavController().navigate(uri)
     }
 
     override fun onDestroyView() {

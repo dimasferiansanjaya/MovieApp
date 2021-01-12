@@ -1,3 +1,7 @@
 package id.dimasferians.moviecatalogue.tv.di
 
-annotation class TvShowScope()
+import javax.inject.Scope
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class TvShowScope

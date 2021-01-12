@@ -1,7 +1,25 @@
 package id.dimasferians.moviecatalogue
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import id.dimasferians.moviecatalogue.core.di.CoreComponent
+import id.dimasferians.moviecatalogue.core.di.CoreComponentProvider
+import id.dimasferians.moviecatalogue.core.di.DaggerCoreComponent
 
-@HiltAndroidApp
-class MovieApp : Application()
+class MovieApp : Application(), CoreComponentProvider {
+
+    init {
+        instance = this
+    }
+
+    companion object {
+        private lateinit var instance: Application
+
+        val coreComponent: CoreComponent by lazy {
+            DaggerCoreComponent.factory().create(instance)
+        }
+    }
+
+    override fun provideCoreComponent(): CoreComponent {
+        return coreComponent
+    }
+}

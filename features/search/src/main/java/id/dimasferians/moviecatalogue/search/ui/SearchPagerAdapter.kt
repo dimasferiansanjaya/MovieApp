@@ -1,4 +1,4 @@
-package id.dimasferians.moviecatalogue.ui.search
+package id.dimasferians.moviecatalogue.search.ui
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

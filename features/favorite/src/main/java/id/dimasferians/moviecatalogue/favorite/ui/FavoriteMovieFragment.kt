@@ -1,5 +1,6 @@
-package id.dimasferians.moviecatalogue.ui.favorite
+package id.dimasferians.moviecatalogue.favorite.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,27 +8,37 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.hilt.android.AndroidEntryPoint
 import id.dimasferians.moviecatalogue.R
 import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
-import id.dimasferians.moviecatalogue.utils.hide
-import id.dimasferians.moviecatalogue.utils.show
+import id.dimasferians.moviecatalogue.core.utils.hide
+import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
+import id.dimasferians.moviecatalogue.core.utils.show
+import id.dimasferians.moviecatalogue.favorite.di.DaggerFavoriteComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-@AndroidEntryPoint
 class FavoriteMovieFragment : Fragment() {
 
     private var _binding: LayoutMovieTvBinding? = null
     private val binding
         get() = _binding!!
 
-    private val viewModel: FavoriteViewModel by viewModels()
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel: FavoriteViewModel by viewModels { viewModelFactory }
     private lateinit var movieAdapter: FavoriteMovieAdapter
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        initDependencyInjection()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +54,12 @@ class FavoriteMovieFragment : Fragment() {
 
         setupRecyclerView()
         initData()
+    }
+
+    private fun initDependencyInjection() {
+        DaggerFavoriteComponent.factory()
+            .create(provideCoreComponent())
+            .inject(this)
     }
 
     private fun initData() {
@@ -80,7 +97,7 @@ class FavoriteMovieFragment : Fragment() {
     }
 
     private fun navigateToMovieDetail(movie: Movie) {
-        val action = FavoriteFragmentDirections.actionNavigationFavoriteToDetailFragment(
+        val action = FavoriteFragmentDirections.actionNavigationFavoriteToNavigationDetail(
             movie.id,
             "movie"
         )

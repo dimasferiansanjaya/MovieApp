@@ -1,4 +1,4 @@
-package id.dimasferians.movieapp.core.domain.usecase
+package id.dimasferians.moviecatalogue.core.domain.usecase
 
 import androidx.paging.PagingData
 import id.dimasferians.moviecatalogue.core.data.Resource

@@ -1,5 +1,6 @@
-package id.dimasferians.moviecatalogue.ui.search
+package id.dimasferians.moviecatalogue.search.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +9,17 @@ import androidx.annotation.StringRes
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
-import id.dimasferians.moviecatalogue.R
-import id.dimasferians.moviecatalogue.databinding.FragmentSearchBinding
+import id.dimasferians.moviecatalogue.core.R
+import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
+import id.dimasferians.moviecatalogue.search.databinding.FragmentSearchBinding
+import id.dimasferians.moviecatalogue.search.di.DaggerSearchComponent
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -22,9 +27,16 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
     private val binding
         get() = _binding!!
 
-    private val viewModel: SearchViewModel by activityViewModels()
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: SearchViewModel by activityViewModels { viewModelFactory }
 
     private var searchJob: Job? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        initDependencyInjection()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +52,12 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
         setupTabWithViewPager()
         initAction()
+    }
+
+    private fun initDependencyInjection() {
+        DaggerSearchComponent.factory()
+            .create(provideCoreComponent())
+            .inject(this)
     }
 
     private fun setupTabWithViewPager() {

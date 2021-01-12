@@ -1,5 +1,6 @@
 package id.dimasferians.moviecatalogue.core.data
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -70,6 +71,7 @@ class MovieRepositoryImpl @Inject constructor(
         }.catch { e ->
             // emit exception
             emit(Resource.Error(e.message.toString()))
+            Log.e(TAG, e.message.toString())
         }.flowOn(dispatcher)
     }
 
@@ -137,6 +139,7 @@ class MovieRepositoryImpl @Inject constructor(
         }.catch { e ->
             // emit exception
             emit(Resource.Error(e.message.toString()))
+            Log.e(TAG, e.message.toString())
         }.flowOn(dispatcher)
     }
 

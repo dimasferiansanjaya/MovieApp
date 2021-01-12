@@ -1,11 +1,10 @@
-package id.dimasferians.moviecatalogue.ui
+package id.dimasferians.moviecatalogue
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import id.dimasferians.moviecatalogue.R
 import id.dimasferians.moviecatalogue.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

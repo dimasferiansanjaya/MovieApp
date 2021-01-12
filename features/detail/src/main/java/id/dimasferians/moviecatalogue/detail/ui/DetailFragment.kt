@@ -1,4 +1,4 @@
-package id.dimasferians.moviecatalogue.ui.detail
+package id.dimasferians.moviecatalogue.detail.ui
 
 import android.content.Context
 import android.content.Intent
@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
@@ -21,14 +20,14 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import id.dimasferians.moviecatalogue.core.BuildConfig
-import id.dimasferians.moviecatalogue.MovieApp
-import id.dimasferians.moviecatalogue.R
 import id.dimasferians.moviecatalogue.core.data.Resource
 import id.dimasferians.moviecatalogue.core.domain.model.*
-import id.dimasferians.moviecatalogue.databinding.FragmentDetailBinding
-import id.dimasferians.moviecatalogue.di.DaggerAppComponent
 import id.dimasferians.moviecatalogue.core.utils.hide
+import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.core.utils.show
+import id.dimasferians.moviecatalogue.detail.R
+import id.dimasferians.moviecatalogue.detail.databinding.FragmentDetailBinding
+import id.dimasferians.moviecatalogue.detail.di.DaggerDetailComponent
 import javax.inject.Inject
 import kotlin.math.abs
 
@@ -41,7 +40,7 @@ class DetailFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: DetailViewModel by viewModels { viewModelFactory }
-    private val args: DetailFragmentArgs by navArgs()
+//    private val args: DetailFragmentArgs by navArgs()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -66,18 +65,23 @@ class DetailFragment : Fragment() {
         }
 
         setAppBarScrollListener()
-        populateView(args.id, args.mediaType)
+
+        val argsId = arguments?.getInt("id")
+        val mediaType = arguments?.getString("mediatype")
+        populateView(argsId, mediaType)
         binding.toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
     }
 
     private fun initDependencyInjection() {
-        DaggerAppComponent.factory()
-            .create(MovieApp.coreComponent)
+        DaggerDetailComponent.factory()
+            .create(provideCoreComponent())
             .inject(this)
     }
 
-    private fun populateView(id: Int, media: String) {
-        if (media == "movie") getDataMovie(id) else getDataTv(id)
+    private fun populateView(id: Int?, media: String?) {
+        if (id != null && media != null) {
+            if (media == "movie") getDataMovie(id) else getDataTv(id)
+        }
     }
 
     private fun getDataMovie(id: Int) {

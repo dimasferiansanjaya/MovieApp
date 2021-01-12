@@ -2,7 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 apply from: '../deps.gradle'
@@ -37,6 +37,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -65,7 +68,7 @@ dependencies {
     // network
     implementation deps.retrofit
     implementation deps.retrofitMoshi
-    api deps.okHttp
+    implementation deps.okHttp
     debugImplementation deps.okHttpLoggingInterceptor
 
     // database
@@ -77,13 +80,8 @@ dependencies {
     kapt deps.glideCompiler
 
     // dependency injection
-    implementation deps.dagger
+    api deps.dagger
     kapt deps.daggerCompiler
-    implementation deps.daggerHilt
-    kapt deps.daggerHiltCompiler
-    implementation deps.androidHilt
-    implementation deps.androidHiltViewModel
-    kapt deps.androidHiltCompiler
 
     // test
     testImplementation 'junit:junit:4.13.1'

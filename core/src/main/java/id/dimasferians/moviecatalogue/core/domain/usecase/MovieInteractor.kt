@@ -1,7 +1,6 @@
 package id.dimasferians.moviecatalogue.core.domain.usecase
 
 import androidx.paging.PagingData
-import id.dimasferians.movieapp.core.domain.usecase.MovieUseCase
 import id.dimasferians.moviecatalogue.core.data.Resource
 import id.dimasferians.moviecatalogue.core.domain.model.*
 import id.dimasferians.moviecatalogue.core.domain.repository.MovieRepository

@@ -1,4 +1,4 @@
-package id.dimasferians.moviecatalogue.ui.favorite
+package id.dimasferians.moviecatalogue.favorite.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
-import dagger.hilt.android.AndroidEntryPoint
 import id.dimasferians.moviecatalogue.R
-import id.dimasferians.moviecatalogue.databinding.FragmentFavoriteBinding
+import id.dimasferians.moviecatalogue.favorite.databinding.FragmentFavoriteBinding
 
-@AndroidEntryPoint
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null

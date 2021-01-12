@@ -1,3 +1,7 @@
 package id.dimasferians.moviecatalogue.search.di
 
-annotation class SearchScope()
+import javax.inject.Scope
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class SearchScope

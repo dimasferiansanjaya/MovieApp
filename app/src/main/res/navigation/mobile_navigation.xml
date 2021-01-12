@@ -7,61 +7,57 @@
 
     <fragment
         android:id="@+id/navigation_movie"
-        android:name="id.dimasferians.moviecatalogue.ui.movie.MovieFragment"
+        android:name="id.dimasferians.moviecatalogue.movie.ui.MovieFragment"
         android:label="@string/title_movie"
         tools:layout="@layout/fragment_movie">
         <action
-            android:id="@+id/action_navigation_movie_to_detailFragment"
-            app:destination="@id/detailFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out" />
+            android:id="@+id/action_navigation_movie_to_navigation_detail"
+            app:destination="@id/navigation_detail" />
     </fragment>
     <fragment
         android:id="@+id/navigation_tv_show"
-        android:name="id.dimasferians.moviecatalogue.ui.tv.TvShowFragment"
+        android:name="id.dimasferians.moviecatalogue.tv.ui.TvShowFragment"
         android:label="@string/title_tv_show"
         tools:layout="@layout/fragment_tv_show">
         <action
-            android:id="@+id/action_navigation_tv_show_to_detailFragment"
-            app:destination="@id/detailFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out" />
+            android:id="@+id/action_navigation_tv_show_to_navigation_detail"
+            app:destination="@id/navigation_detail" />
     </fragment>
     <fragment
         android:id="@+id/navigation_search"
-        android:name="id.dimasferians.moviecatalogue.ui.search.SearchFragment"
+        android:name="id.dimasferians.moviecatalogue.search.ui.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/action_navigation_search_to_detailFragment"
-            app:destination="@id/detailFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out" />
+            android:id="@+id/action_navigation_search_to_navigation_detail"
+            app:destination="@id/navigation_detail" />
     </fragment>
     <fragment
         android:id="@+id/navigation_favorite"
-        android:name="id.dimasferians.moviecatalogue.ui.favorite.FavoriteFragment"
+        android:name="id.dimasferians.moviecatalogue.favorite.ui.FavoriteFragment"
         android:label="@string/title_favorite"
+        app:moduleName="Movie_Catalogue.features.favorite"
         tools:layout="@layout/fragment_favorite">
         <action
-            android:id="@+id/action_navigation_favorite_to_detailFragment"
-            app:destination="@id/detailFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out" />
+            android:id="@+id/action_navigation_favorite_to_navigation_detail"
+            app:destination="@id/navigation_detail" />
     </fragment>
     <fragment
-        android:id="@+id/detailFragment"
-        android:name="id.dimasferians.moviecatalogue.ui.detail.DetailFragment"
-        android:label="detail_fragment"
+        android:id="@+id/navigation_detail"
+        android:name="id.dimasferians.moviecatalogue.detail.ui.DetailFragment"
+        android:label="fragment_detail"
         tools:layout="@layout/fragment_detail">
         <argument
             android:name="id"
-            android:defaultValue="1"
+            android:defaultValue="0"
             app:argType="integer" />
         <argument
-            android:name="media_type"
+            android:name="mediatype"
             android:defaultValue="movie"
             app:argType="string" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="movieapp://moviecatalogue/detail/{id}/{mediatype}" />
     </fragment>
 
 </navigation>

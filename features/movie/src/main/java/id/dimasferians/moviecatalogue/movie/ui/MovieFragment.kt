@@ -1,6 +1,7 @@
-package id.dimasferians.moviecatalogue.ui.movie
+package id.dimasferians.moviecatalogue.movie.ui
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import id.dimasferians.moviecatalogue.core.di.CoreComponentProvider
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
 import id.dimasferians.moviecatalogue.core.ui.movie.MovieLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.movie.MoviePagingAdapter
-import id.dimasferians.moviecatalogue.databinding.FragmentMovieBinding
+import id.dimasferians.moviecatalogue.movie.databinding.FragmentMovieBinding
+import id.dimasferians.moviecatalogue.movie.di.DaggerMovieComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -53,9 +56,10 @@ class MovieFragment : Fragment() {
     }
 
     private fun initDependencyInjection() {
-//        DaggerAppComponent.factory()
-//            .create(MovieApp.coreComponent)
-//            .inject(this)
+        val coreComponent = (requireActivity().application as CoreComponentProvider).provideCoreComponent()
+        DaggerMovieComponent.factory()
+            .create(coreComponent)
+            .inject(this)
     }
 
     private fun initObserver() {
@@ -82,9 +86,8 @@ class MovieFragment : Fragment() {
     }
 
     private fun navigateToMovieDetail(movie: Movie) {
-        val action =
-            MovieFragmentDirections.actionNavigationMovieToDetailFragment(movie.id, "movie")
-        findNavController().navigate(action)
+        val uri = Uri.parse("movieapp://moviecatalogue/detail/${movie.id}/movie")
+        findNavController().navigate(uri)
     }
 
     override fun onDestroyView() {

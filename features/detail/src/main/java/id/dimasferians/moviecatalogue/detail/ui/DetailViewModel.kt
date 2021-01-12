@@ -1,16 +1,18 @@
-package id.dimasferians.moviecatalogue.ui.detail
+package id.dimasferians.moviecatalogue.detail.ui
 
 import androidx.lifecycle.*
-import id.dimasferians.movieapp.core.domain.usecase.MovieUseCase
+import id.dimasferians.moviecatalogue.core.domain.usecase.MovieUseCase
 import id.dimasferians.moviecatalogue.core.data.Resource
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
 import id.dimasferians.moviecatalogue.core.domain.model.MovieDetail
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
 import id.dimasferians.moviecatalogue.core.domain.model.TvShowDetail
+import id.dimasferians.moviecatalogue.detail.di.DetailScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@DetailScope
 class DetailViewModel @Inject constructor(private val movieUseCase: MovieUseCase) :
     ViewModel() {
 

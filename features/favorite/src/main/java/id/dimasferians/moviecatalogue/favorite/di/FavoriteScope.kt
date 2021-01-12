@@ -1,3 +1,7 @@
 package id.dimasferians.moviecatalogue.favorite.di
 
-annotation class FavoriteScope()
+import javax.inject.Scope
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class FavoriteScope
