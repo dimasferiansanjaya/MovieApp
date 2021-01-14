@@ -49,17 +49,18 @@ ext {
 
             // Lifecycle
             lifecycleRuntime        : "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}",
+            lifecycleCommonJava     : "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}",
             lifecycleExtensions     : "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}",
             lifecycleCompiler       : "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}",
             viewmodelKtx            : "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}",
             liveDataKtx             : "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}",
 
             // Dependency Injection
-            dagger                : "com.google.dagger:dagger:${versions.dagger}",
-            daggerCompiler        : "com.google.dagger:dagger-compiler:${versions.dagger}",
-            daggerAndroid         : "com.google.dagger:dagger-android:${versions.dagger}",
-            daggerAndroidSupport  : "com.google.dagger:dagger-android-support:${versions.dagger}",
-            daggerAndroidProcessor: "com.google.dagger:dagger-android-processor:${versions.dagger}",
+            dagger                  : "com.google.dagger:dagger:${versions.dagger}",
+            daggerCompiler          : "com.google.dagger:dagger-compiler:${versions.dagger}",
+            daggerAndroid           : "com.google.dagger:dagger-android:${versions.dagger}",
+            daggerAndroidSupport    : "com.google.dagger:dagger-android-support:${versions.dagger}",
+            daggerAndroidProcessor  : "com.google.dagger:dagger-android-processor:${versions.dagger}",
 
             // Network
             retrofit                : "com.squareup.retrofit2:retrofit:${versions.retrofit}",

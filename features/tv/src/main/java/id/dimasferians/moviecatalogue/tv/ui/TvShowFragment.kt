@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowPagingAdapter
+import id.dimasferians.moviecatalogue.core.utils.autoCleared
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.tv.databinding.FragmentTvShowBinding
 import id.dimasferians.moviecatalogue.tv.di.DaggerTvShowComponent
@@ -24,9 +25,7 @@ import javax.inject.Inject
 
 class TvShowFragment : Fragment() {
 
-    private var _binding: FragmentTvShowBinding? = null
-    private val binding
-        get() = _binding!!
+    private var binding by autoCleared<FragmentTvShowBinding>()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -44,7 +43,7 @@ class TvShowFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTvShowBinding.inflate(inflater, container, false)
+        binding = FragmentTvShowBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -88,10 +87,5 @@ class TvShowFragment : Fragment() {
     private fun navigateToMovieDetail(tv: TvShow) {
         val uri = Uri.parse("movieapp://moviecatalogue/detail/${tv.id}/tv")
         findNavController().navigate(uri)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

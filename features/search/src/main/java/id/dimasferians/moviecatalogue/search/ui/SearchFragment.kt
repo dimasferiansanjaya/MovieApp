@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import id.dimasferians.moviecatalogue.core.R
+import id.dimasferians.moviecatalogue.core.utils.autoCleared
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.search.databinding.FragmentSearchBinding
 import id.dimasferians.moviecatalogue.search.di.DaggerSearchComponent
@@ -23,10 +24,7 @@ import javax.inject.Inject
 
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
-    private var _binding: FragmentSearchBinding? = null
-    private val binding
-        get() = _binding!!
-
+    private var binding by autoCleared<FragmentSearchBinding>()
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SearchViewModel by activityViewModels { viewModelFactory }
@@ -43,7 +41,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -105,11 +103,6 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
             }
         }
         return false
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 }

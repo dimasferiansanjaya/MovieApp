@@ -19,6 +19,7 @@ import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
 import id.dimasferians.moviecatalogue.core.ui.movie.MovieLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.movie.MoviePagingAdapter
+import id.dimasferians.moviecatalogue.core.utils.autoCleared
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.core.utils.show
@@ -31,9 +32,7 @@ import javax.inject.Inject
 
 class SearchMovieFragment : Fragment() {
 
-    private var _binding: LayoutMovieTvBinding? = null
-    private val binding
-        get() = _binding!!
+    private var binding by autoCleared<LayoutMovieTvBinding>()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -50,7 +49,7 @@ class SearchMovieFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = LayoutMovieTvBinding.inflate(inflater, container, false)
+        binding = LayoutMovieTvBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -138,11 +137,6 @@ class SearchMovieFragment : Fragment() {
     private fun navigateToMovieDetail(movie: Movie) {
         val uri = Uri.parse("movieapp://moviecatalogue/detail/${movie.id}/movie")
         findNavController().navigate(uri)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 }

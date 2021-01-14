@@ -22,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import id.dimasferians.moviecatalogue.core.BuildConfig
 import id.dimasferians.moviecatalogue.core.data.Resource
 import id.dimasferians.moviecatalogue.core.domain.model.*
+import id.dimasferians.moviecatalogue.core.utils.autoCleared
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.core.utils.show
@@ -33,9 +34,7 @@ import kotlin.math.abs
 
 class DetailFragment : Fragment() {
 
-    private var _binding: FragmentDetailBinding? = null
-    private val binding
-        get() = _binding!!
+    private var binding by autoCleared<FragmentDetailBinding>()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -52,7 +51,7 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -303,7 +302,6 @@ class DetailFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         if (Build.VERSION.SDK_INT >= 21) {
             requireActivity().window.statusBarColor =
                 ContextCompat.getColor(requireActivity(), R.color.red)

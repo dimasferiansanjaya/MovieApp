@@ -53,6 +53,7 @@ dependencies {
     api deps.fragmentKtx
     api deps.viewmodelKtx
     api deps.liveDataKtx
+    api deps.lifecycleCommonJava
 
     // ui
     api deps.material

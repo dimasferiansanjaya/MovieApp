@@ -19,6 +19,7 @@ import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowPagingAdapter
+import id.dimasferians.moviecatalogue.core.utils.autoCleared
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.core.utils.show
@@ -31,9 +32,7 @@ import javax.inject.Inject
 
 class SearchTvFragment : Fragment() {
 
-    private var _binding: LayoutMovieTvBinding? = null
-    private val binding
-        get() = _binding!!
+    private var binding by autoCleared<LayoutMovieTvBinding>()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -50,7 +49,7 @@ class SearchTvFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = LayoutMovieTvBinding.inflate(inflater, container, false)
+        binding = LayoutMovieTvBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -139,11 +138,6 @@ class SearchTvFragment : Fragment() {
     private fun navigateToMovieDetail(tv: TvShow) {
         val uri = Uri.parse("movieapp://moviecatalogue/detail/${tv.id}/tv")
         findNavController().navigate(uri)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 }

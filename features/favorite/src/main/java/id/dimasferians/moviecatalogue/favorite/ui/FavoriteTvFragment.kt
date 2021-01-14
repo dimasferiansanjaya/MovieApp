@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import id.dimasferians.moviecatalogue.R
 import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
+import id.dimasferians.moviecatalogue.core.utils.autoCleared
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.core.utils.show
@@ -25,9 +26,7 @@ import javax.inject.Inject
 
 class FavoriteTvFragment : Fragment() {
 
-    private var _binding: LayoutMovieTvBinding? = null
-    private val binding
-        get() = _binding!!
+    private var binding by autoCleared<LayoutMovieTvBinding>()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -45,7 +44,7 @@ class FavoriteTvFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = LayoutMovieTvBinding.inflate(inflater, container, false)
+        binding = LayoutMovieTvBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -100,10 +99,5 @@ class FavoriteTvFragment : Fragment() {
         val action =
             FavoriteFragmentDirections.actionNavigationFavoriteToNavigationDetail(tv.id, "tv")
         findNavController().navigate(action)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

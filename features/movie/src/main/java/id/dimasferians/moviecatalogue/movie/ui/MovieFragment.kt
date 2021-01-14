@@ -16,6 +16,7 @@ import id.dimasferians.moviecatalogue.core.di.CoreComponentProvider
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
 import id.dimasferians.moviecatalogue.core.ui.movie.MovieLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.movie.MoviePagingAdapter
+import id.dimasferians.moviecatalogue.core.utils.autoCleared
 import id.dimasferians.moviecatalogue.movie.databinding.FragmentMovieBinding
 import id.dimasferians.moviecatalogue.movie.di.DaggerMovieComponent
 import kotlinx.coroutines.flow.collectLatest
@@ -24,9 +25,7 @@ import javax.inject.Inject
 
 class MovieFragment : Fragment() {
 
-    private var _binding: FragmentMovieBinding? = null
-    private val binding
-        get() = _binding!!
+    private var binding by autoCleared<FragmentMovieBinding>()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -44,7 +43,7 @@ class MovieFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentMovieBinding.inflate(inflater, container, false)
+        binding = FragmentMovieBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -88,11 +87,6 @@ class MovieFragment : Fragment() {
     private fun navigateToMovieDetail(movie: Movie) {
         val uri = Uri.parse("movieapp://moviecatalogue/detail/${movie.id}/movie")
         findNavController().navigate(uri)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 }
