@@ -58,13 +58,6 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            requireActivity().window.statusBarColor =
-                ContextCompat.getColor(requireActivity(), R.color.overlay_dark_30)
-        }
-
-        setAppBarScrollListener()
-
         val argsId = arguments?.getInt("id")
         val mediaType = arguments?.getString("mediatype")
         populateView(argsId, mediaType)
@@ -271,22 +264,6 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun setAppBarScrollListener() {
-        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, i ->
-            if (abs(i) - appBarLayout.totalScrollRange == 0) {
-                if (Build.VERSION.SDK_INT >= 21) {
-                    requireActivity().window.statusBarColor =
-                        ContextCompat.getColor(requireActivity(), R.color.red)
-                }
-            } else {
-                if (Build.VERSION.SDK_INT >= 21) {
-                    requireActivity().window.statusBarColor =
-                        ContextCompat.getColor(requireActivity(), R.color.overlay_dark_30)
-                }
-            }
-        })
-    }
-
     private fun setShareButton(title: String) {
         binding.btnShare.setOnClickListener {
             val shareMsg = getString(R.string.share_message, title)
@@ -297,14 +274,6 @@ class DetailFragment : Fragment() {
             }
             val shareIntent = Intent.createChooser(intent, "Share using...")
             startActivity(shareIntent)
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        if (Build.VERSION.SDK_INT >= 21) {
-            requireActivity().window.statusBarColor =
-                ContextCompat.getColor(requireActivity(), R.color.red)
         }
     }
 

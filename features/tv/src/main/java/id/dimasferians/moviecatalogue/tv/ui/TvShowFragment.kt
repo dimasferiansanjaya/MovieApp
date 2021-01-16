@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
+import id.dimasferians.moviecatalogue.core.ui.tv.TvShowItemListener
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowPagingAdapter
 import id.dimasferians.moviecatalogue.core.utils.autoCleared
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TvShowFragment : Fragment() {
+class TvShowFragment : Fragment(), TvShowItemListener {
 
     private var binding by autoCleared<FragmentTvShowBinding>()
 
@@ -31,7 +32,7 @@ class TvShowFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val tvShowViewModel: TvShowViewModel by viewModels { viewModelFactory }
-    private lateinit var tvAdapter: TvShowPagingAdapter
+    private val tvAdapter: TvShowPagingAdapter by lazy { TvShowPagingAdapter(this) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -70,12 +71,8 @@ class TvShowFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        tvAdapter = TvShowPagingAdapter { tv ->
-            navigateToMovieDetail(tv)
-        }
-
         binding.layoutTv.rvMovieTv.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = tvAdapter.withLoadStateHeaderAndFooter(
                 header = TvShowLoadStateAdapter { tvAdapter.retry() },
                 footer = TvShowLoadStateAdapter { tvAdapter.retry() }
@@ -88,4 +85,9 @@ class TvShowFragment : Fragment() {
         val uri = Uri.parse("movieapp://moviecatalogue/detail/${tv.id}/tv")
         findNavController().navigate(uri)
     }
+
+    override fun onItemClicked(tvShow: TvShow) {
+        navigateToMovieDetail(tvShow)
+    }
+
 }

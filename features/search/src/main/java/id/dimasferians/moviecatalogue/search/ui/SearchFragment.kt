@@ -25,6 +25,7 @@ import javax.inject.Inject
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private var binding by autoCleared<FragmentSearchBinding>()
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SearchViewModel by activityViewModels { viewModelFactory }
@@ -103,6 +104,12 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
             }
         }
         return false
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.viewPagerSearch.adapter = null
+        searchJob?.cancel()
     }
 
 }

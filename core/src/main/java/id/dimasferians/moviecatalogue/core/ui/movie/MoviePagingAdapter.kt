@@ -13,7 +13,7 @@ import id.dimasferians.moviecatalogue.core.R
 import id.dimasferians.moviecatalogue.core.databinding.ItemMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
 
-class MoviePagingAdapter(private val onItemClicked: (Movie) -> Unit) :
+class MoviePagingAdapter(private val movieItemListener: MovieItemListener) :
     PagingDataAdapter<Movie, MoviePagingAdapter.MovieViewHolder>(MOVIE_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -23,14 +23,14 @@ class MoviePagingAdapter(private val onItemClicked: (Movie) -> Unit) :
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it, onItemClicked)
+            holder.bind(it)
         }
     }
 
-    class MovieViewHolder(private val itemBinding: ItemMovieTvBinding) :
+    inner class MovieViewHolder(private val itemBinding: ItemMovieTvBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(movie: Movie, onItemClicked: (Movie) -> Unit) {
+        fun bind(movie: Movie) {
             // i have tested that poster_path and overview in some case return null/blank
             Glide.with(itemBinding.container.context)
                 .load(
@@ -54,7 +54,7 @@ class MoviePagingAdapter(private val onItemClicked: (Movie) -> Unit) :
                 tvVoteCount.text =
                     itemBinding.container.context.getString(R.string.vote_count, movie.voteCount)
             }
-            itemView.setOnClickListener { onItemClicked(movie) }
+            itemView.setOnClickListener { movieItemListener.onItemClicked(movie) }
         }
     }
 

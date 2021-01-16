@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import id.dimasferians.moviecatalogue.R
 import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
+import id.dimasferians.moviecatalogue.core.ui.tv.TvShowItemListener
 import id.dimasferians.moviecatalogue.core.utils.autoCleared
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
@@ -24,7 +25,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class FavoriteTvFragment : Fragment() {
+class FavoriteTvFragment : Fragment(), TvShowItemListener {
 
     private var binding by autoCleared<LayoutMovieTvBinding>()
 
@@ -32,7 +33,7 @@ class FavoriteTvFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel: FavoriteViewModel by viewModels { viewModelFactory }
-    private lateinit var tvShowAdapter: FavoriteTvShowAdapter
+    private val tvShowAdapter: FavoriteTvShowAdapter by lazy { FavoriteTvShowAdapter(this) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -84,10 +85,6 @@ class FavoriteTvFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        tvShowAdapter = FavoriteTvShowAdapter { tv ->
-            navigateToMovieDetail(tv)
-        }
-
         binding.rvMovieTv.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = tvShowAdapter
@@ -99,5 +96,14 @@ class FavoriteTvFragment : Fragment() {
         val action =
             FavoriteFragmentDirections.actionNavigationFavoriteToNavigationDetail(tv.id, "tv")
         findNavController().navigate(action)
+    }
+
+    override fun onItemClicked(tvShow: TvShow) {
+        navigateToMovieDetail(tvShow)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.rvMovieTv.adapter = null
     }
 }

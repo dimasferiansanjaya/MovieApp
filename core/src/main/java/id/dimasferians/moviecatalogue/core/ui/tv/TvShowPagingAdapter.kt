@@ -13,7 +13,7 @@ import id.dimasferians.moviecatalogue.core.R
 import id.dimasferians.moviecatalogue.core.databinding.ItemMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
 
-class TvShowPagingAdapter(private val onItemClicked: (TvShow) -> Unit) :
+class TvShowPagingAdapter(private val tvShowItemListener: TvShowItemListener) :
     PagingDataAdapter<TvShow, TvShowPagingAdapter.TvShowViewHolder>(TV_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
@@ -23,14 +23,14 @@ class TvShowPagingAdapter(private val onItemClicked: (TvShow) -> Unit) :
 
     override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it, onItemClicked)
+            holder.bind(it)
         }
     }
 
-    class TvShowViewHolder(private val itemBinding: ItemMovieTvBinding) :
+    inner class TvShowViewHolder(private val itemBinding: ItemMovieTvBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(tvShow: TvShow, onItemClicked: (TvShow) -> Unit) {
+        fun bind(tvShow: TvShow) {
             // i have tested that poster_path and overview in some case return null/blank
             Glide.with(itemBinding.container.context)
                 .load(
@@ -55,7 +55,7 @@ class TvShowPagingAdapter(private val onItemClicked: (TvShow) -> Unit) :
                     itemBinding.container.context.getString(R.string.vote_count, tvShow.voteCount)
             }
 
-            itemView.setOnClickListener { onItemClicked(tvShow) }
+            itemView.setOnClickListener { tvShowItemListener.onItemClicked(tvShow) }
         }
     }
 

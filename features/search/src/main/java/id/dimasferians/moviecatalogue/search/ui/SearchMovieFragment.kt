@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import id.dimasferians.moviecatalogue.core.R
 import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
+import id.dimasferians.moviecatalogue.core.ui.movie.MovieItemListener
 import id.dimasferians.moviecatalogue.core.ui.movie.MovieLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.movie.MoviePagingAdapter
 import id.dimasferians.moviecatalogue.core.utils.autoCleared
@@ -30,14 +31,14 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SearchMovieFragment : Fragment() {
+class SearchMovieFragment : Fragment(), MovieItemListener {
 
     private var binding by autoCleared<LayoutMovieTvBinding>()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SearchViewModel by activityViewModels { viewModelFactory }
-    private lateinit var movieAdapter: MoviePagingAdapter
+    private val movieAdapter: MoviePagingAdapter by lazy { MoviePagingAdapter(this) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -120,10 +121,6 @@ class SearchMovieFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        movieAdapter = MoviePagingAdapter { movie ->
-            navigateToMovieDetail(movie)
-        }
-
         binding.rvMovieTv.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = movieAdapter.withLoadStateHeaderAndFooter(
@@ -137,6 +134,15 @@ class SearchMovieFragment : Fragment() {
     private fun navigateToMovieDetail(movie: Movie) {
         val uri = Uri.parse("movieapp://moviecatalogue/detail/${movie.id}/movie")
         findNavController().navigate(uri)
+    }
+
+    override fun onItemClicked(movie: Movie) {
+        navigateToMovieDetail(movie)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.rvMovieTv.adapter = null
     }
 
 }

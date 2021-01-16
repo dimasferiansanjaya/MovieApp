@@ -10,8 +10,9 @@ import id.dimasferians.moviecatalogue.BuildConfig
 import id.dimasferians.moviecatalogue.R
 import id.dimasferians.moviecatalogue.core.databinding.ItemMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
+import id.dimasferians.moviecatalogue.core.ui.movie.MovieItemListener
 
-class FavoriteMovieAdapter(private val onItemClicked: (Movie) -> Unit) :
+class FavoriteMovieAdapter(private val movieItemListener: MovieItemListener) :
     RecyclerView.Adapter<FavoriteMovieAdapter.ViewHolder>() {
 
     private var movieList: List<Movie> = emptyList()
@@ -27,14 +28,14 @@ class FavoriteMovieAdapter(private val onItemClicked: (Movie) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(movieList[position], onItemClicked)
+        holder.bind(movieList[position])
     }
 
     override fun getItemCount(): Int = movieList.size
 
-    class ViewHolder(private val itemBinding: ItemMovieTvBinding) :
+    inner class ViewHolder(private val itemBinding: ItemMovieTvBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(movie: Movie, onItemClicked: (Movie) -> Unit) {
+        fun bind(movie: Movie) {
             // i have tested that poster_path and overview in some case return null/blank
             Glide.with(itemBinding.container.context)
                 .load(
@@ -55,7 +56,7 @@ class FavoriteMovieAdapter(private val onItemClicked: (Movie) -> Unit) :
                 ratingBar.rating = movie.voteAverage.div(2).toFloat()
                 tvVoteCount.text = itemBinding.container.context.getString(R.string.vote_count, movie.voteCount)
             }
-            itemView.setOnClickListener { onItemClicked(movie) }
+            itemView.setOnClickListener { movieItemListener.onItemClicked(movie) }
         }
     }
 }

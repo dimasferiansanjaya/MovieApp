@@ -54,4 +54,6 @@ dependencies {
     // dependency injection
     implementation deps.dagger
     kapt deps.daggerCompiler
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
 }

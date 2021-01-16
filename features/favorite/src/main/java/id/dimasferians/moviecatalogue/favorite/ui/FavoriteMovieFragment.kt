@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import id.dimasferians.moviecatalogue.R
 import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
+import id.dimasferians.moviecatalogue.core.ui.movie.MovieItemListener
 import id.dimasferians.moviecatalogue.core.utils.autoCleared
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
@@ -24,7 +25,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class FavoriteMovieFragment : Fragment() {
+class FavoriteMovieFragment : Fragment(), MovieItemListener {
 
     private var binding by autoCleared<LayoutMovieTvBinding>()
 
@@ -32,7 +33,7 @@ class FavoriteMovieFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel: FavoriteViewModel by viewModels { viewModelFactory }
-    private lateinit var movieAdapter: FavoriteMovieAdapter
+    private val movieAdapter: FavoriteMovieAdapter by lazy { FavoriteMovieAdapter(this) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -84,10 +85,6 @@ class FavoriteMovieFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val onItemClicked: (Movie) -> Unit = { movie ->
-            navigateToMovieDetail(movie)
-        }
-        movieAdapter = FavoriteMovieAdapter(onItemClicked)
         binding.rvMovieTv.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = movieAdapter
@@ -101,6 +98,15 @@ class FavoriteMovieFragment : Fragment() {
             "movie"
         )
         findNavController().navigate(action)
+    }
+
+    override fun onItemClicked(movie: Movie) {
+        navigateToMovieDetail(movie)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.rvMovieTv.adapter = null
     }
 
 }

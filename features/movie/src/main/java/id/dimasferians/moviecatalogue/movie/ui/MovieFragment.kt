@@ -12,18 +12,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import id.dimasferians.moviecatalogue.core.di.CoreComponentProvider
 import id.dimasferians.moviecatalogue.core.domain.model.Movie
+import id.dimasferians.moviecatalogue.core.ui.movie.MovieItemListener
 import id.dimasferians.moviecatalogue.core.ui.movie.MovieLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.movie.MoviePagingAdapter
 import id.dimasferians.moviecatalogue.core.utils.autoCleared
+import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.movie.databinding.FragmentMovieBinding
 import id.dimasferians.moviecatalogue.movie.di.DaggerMovieComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MovieFragment : Fragment() {
+class MovieFragment : Fragment(), MovieItemListener {
 
     private var binding by autoCleared<FragmentMovieBinding>()
 
@@ -31,7 +32,7 @@ class MovieFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val movieViewModel: MovieViewModel by viewModels { viewModelFactory }
 
-    private lateinit var movieAdapter: MoviePagingAdapter
+    private val movieAdapter: MoviePagingAdapter by lazy { MoviePagingAdapter(this) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -55,9 +56,8 @@ class MovieFragment : Fragment() {
     }
 
     private fun initDependencyInjection() {
-        val coreComponent = (requireActivity().application as CoreComponentProvider).provideCoreComponent()
         DaggerMovieComponent.factory()
-            .create(coreComponent)
+            .create(provideCoreComponent())
             .inject(this)
     }
 
@@ -70,12 +70,8 @@ class MovieFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        movieAdapter = MoviePagingAdapter { movie ->
-            navigateToMovieDetail(movie)
-        }
-
         binding.layoutMovie.rvMovieTv.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = movieAdapter.withLoadStateHeaderAndFooter(
                 header = MovieLoadStateAdapter { movieAdapter.retry() },
                 footer = MovieLoadStateAdapter { movieAdapter.retry() }
@@ -87,6 +83,10 @@ class MovieFragment : Fragment() {
     private fun navigateToMovieDetail(movie: Movie) {
         val uri = Uri.parse("movieapp://moviecatalogue/detail/${movie.id}/movie")
         findNavController().navigate(uri)
+    }
+
+    override fun onItemClicked(movie: Movie) {
+        navigateToMovieDetail(movie)
     }
 
 }

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import id.dimasferians.moviecatalogue.core.R
 import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
+import id.dimasferians.moviecatalogue.core.ui.tv.TvShowItemListener
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowPagingAdapter
 import id.dimasferians.moviecatalogue.core.utils.autoCleared
@@ -30,14 +31,14 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SearchTvFragment : Fragment() {
+class SearchTvFragment : Fragment(), TvShowItemListener {
 
     private var binding by autoCleared<LayoutMovieTvBinding>()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SearchViewModel by activityViewModels {viewModelFactory}
-    private lateinit var tvAdapter: TvShowPagingAdapter
+    private val tvAdapter: TvShowPagingAdapter by lazy { TvShowPagingAdapter(this) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -121,10 +122,6 @@ class SearchTvFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        tvAdapter = TvShowPagingAdapter { tv ->
-            navigateToMovieDetail(tv)
-        }
-
         binding.rvMovieTv.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = tvAdapter.withLoadStateHeaderAndFooter(
@@ -138,6 +135,15 @@ class SearchTvFragment : Fragment() {
     private fun navigateToMovieDetail(tv: TvShow) {
         val uri = Uri.parse("movieapp://moviecatalogue/detail/${tv.id}/tv")
         findNavController().navigate(uri)
+    }
+
+    override fun onItemClicked(tvShow: TvShow) {
+        navigateToMovieDetail(tvShow)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.rvMovieTv.adapter = null
     }
 
 }
