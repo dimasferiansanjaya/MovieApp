@@ -16,7 +16,7 @@ import id.dimasferians.moviecatalogue.core.domain.model.TvShow
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowItemListener
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowPagingAdapter
-import id.dimasferians.moviecatalogue.core.utils.autoCleared
+import id.dimasferians.moviecatalogue.core.utils.viewBindings
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.tv.databinding.FragmentTvShowBinding
 import id.dimasferians.moviecatalogue.tv.di.DaggerTvShowComponent
@@ -26,13 +26,13 @@ import javax.inject.Inject
 
 class TvShowFragment : Fragment(), TvShowItemListener {
 
-    private var binding by autoCleared<FragmentTvShowBinding>()
+    private var binding : FragmentTvShowBinding by viewBindings()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val tvShowViewModel: TvShowViewModel by viewModels { viewModelFactory }
-    private val tvAdapter: TvShowPagingAdapter by lazy { TvShowPagingAdapter(this) }
+    private var tvAdapter: TvShowPagingAdapter? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -65,17 +65,18 @@ class TvShowFragment : Fragment(), TvShowItemListener {
     private fun initObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             tvShowViewModel.tvShowPagingData.collectLatest {
-                tvAdapter.submitData(it)
+                tvAdapter?.submitData(it)
             }
         }
     }
 
     private fun setupRecyclerView() {
+        tvAdapter = TvShowPagingAdapter(this)
         binding.layoutTv.rvMovieTv.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = tvAdapter.withLoadStateHeaderAndFooter(
-                header = TvShowLoadStateAdapter { tvAdapter.retry() },
-                footer = TvShowLoadStateAdapter { tvAdapter.retry() }
+            adapter = tvAdapter?.withLoadStateHeaderAndFooter(
+                header = TvShowLoadStateAdapter { tvAdapter?.retry() },
+                footer = TvShowLoadStateAdapter { tvAdapter?.retry() }
             )
             setHasFixedSize(true)
         }
@@ -88,6 +89,12 @@ class TvShowFragment : Fragment(), TvShowItemListener {
 
     override fun onItemClicked(tvShow: TvShow) {
         navigateToMovieDetail(tvShow)
+    }
+
+    // avoid memory leak
+    override fun onDestroyView() {
+        super.onDestroyView()
+        tvAdapter = null
     }
 
 }

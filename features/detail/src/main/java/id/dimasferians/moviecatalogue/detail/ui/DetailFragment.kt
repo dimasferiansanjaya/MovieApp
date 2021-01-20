@@ -22,7 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import id.dimasferians.moviecatalogue.core.BuildConfig
 import id.dimasferians.moviecatalogue.core.data.Resource
 import id.dimasferians.moviecatalogue.core.domain.model.*
-import id.dimasferians.moviecatalogue.core.utils.autoCleared
+import id.dimasferians.moviecatalogue.core.utils.viewBindings
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.core.utils.show
@@ -34,7 +34,7 @@ import kotlin.math.abs
 
 class DetailFragment : Fragment() {
 
-    private var binding by autoCleared<FragmentDetailBinding>()
+    private var binding by viewBindings<FragmentDetailBinding>()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -57,6 +57,13 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            requireActivity().window.statusBarColor =
+                ContextCompat.getColor(requireActivity(), R.color.overlay_dark_30)
+        }
+
+        setAppBarScrollListener()
 
         val argsId = arguments?.getInt("id")
         val mediaType = arguments?.getString("mediatype")
@@ -274,6 +281,30 @@ class DetailFragment : Fragment() {
             }
             val shareIntent = Intent.createChooser(intent, "Share using...")
             startActivity(shareIntent)
+        }
+    }
+
+    private fun setAppBarScrollListener() {
+        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, i ->
+            if (abs(i) - appBarLayout.totalScrollRange == 0) {
+                if (Build.VERSION.SDK_INT >= 21) {
+                    requireActivity().window.statusBarColor =
+                        ContextCompat.getColor(requireActivity(), R.color.red)
+                }
+            } else {
+                if (Build.VERSION.SDK_INT >= 21) {
+                    requireActivity().window.statusBarColor =
+                        ContextCompat.getColor(requireActivity(), R.color.overlay_dark_30)
+                }
+            }
+        })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (Build.VERSION.SDK_INT >= 21) {
+            requireActivity().window.statusBarColor =
+                ContextCompat.getColor(requireActivity(), R.color.red)
         }
     }
 

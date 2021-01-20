@@ -1,17 +1,19 @@
 package id.dimasferians.moviecatalogue.search.ui
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class SearchPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+class SearchPagerAdapter(fm: FragmentManager, lifecycle: Lifecycle) :
+    FragmentStateAdapter(fm, lifecycle) {
 
     private val fragments = listOf(
-        SearchMovieFragment(),
-        SearchTvFragment()
+        { SearchMovieFragment() },
+        { SearchTvFragment() }
     )
 
     override fun getItemCount(): Int = fragments.size
 
-    override fun createFragment(position: Int): Fragment = fragments[position]
+    override fun createFragment(position: Int): Fragment = fragments[position].invoke()
 }

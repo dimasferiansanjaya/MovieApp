@@ -20,7 +20,7 @@ import id.dimasferians.moviecatalogue.core.domain.model.Movie
 import id.dimasferians.moviecatalogue.core.ui.movie.MovieItemListener
 import id.dimasferians.moviecatalogue.core.ui.movie.MovieLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.movie.MoviePagingAdapter
-import id.dimasferians.moviecatalogue.core.utils.autoCleared
+import id.dimasferians.moviecatalogue.core.utils.viewBindings
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.core.utils.show
@@ -33,12 +33,13 @@ import javax.inject.Inject
 
 class SearchMovieFragment : Fragment(), MovieItemListener {
 
-    private var binding by autoCleared<LayoutMovieTvBinding>()
+    private var binding: LayoutMovieTvBinding by viewBindings()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SearchViewModel by activityViewModels { viewModelFactory }
-    private val movieAdapter: MoviePagingAdapter by lazy { MoviePagingAdapter(this) }
+
+    private var movieAdapter: MoviePagingAdapter? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -70,7 +71,7 @@ class SearchMovieFragment : Fragment(), MovieItemListener {
     private fun initObserver() {
         viewModel.liveDataMovie.observe(viewLifecycleOwner) {
             viewLifecycleOwner.lifecycleScope.launch {
-                movieAdapter.submitData(it)
+                movieAdapter?.submitData(it)
             }
         }
 
@@ -95,12 +96,12 @@ class SearchMovieFragment : Fragment(), MovieItemListener {
 
         // show empty layout when paging data is null or empty
         viewLifecycleOwner.lifecycleScope.launch {
-            movieAdapter.loadStateFlow
-                .distinctUntilChangedBy { it.refresh }
-                .filter { it.refresh is LoadState.NotLoading }
-                .collect {
+            movieAdapter?.loadStateFlow
+                ?.distinctUntilChangedBy { it.refresh }
+                ?.filter { it.refresh is LoadState.NotLoading }
+                ?.collect {
                     // capture data to list
-                    val list = movieAdapter.snapshot()
+                    val list = movieAdapter?.snapshot()
                     if (list.isNullOrEmpty()) {
                         binding.layoutEmpty.show()
                         binding.rvMovieTv.hide()
@@ -121,11 +122,12 @@ class SearchMovieFragment : Fragment(), MovieItemListener {
     }
 
     private fun setupRecyclerView() {
+        movieAdapter = MoviePagingAdapter(this)
         binding.rvMovieTv.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = movieAdapter.withLoadStateHeaderAndFooter(
-                header = MovieLoadStateAdapter { movieAdapter.retry() },
-                footer = MovieLoadStateAdapter { movieAdapter.retry() }
+            adapter = movieAdapter?.withLoadStateHeaderAndFooter(
+                header = MovieLoadStateAdapter { movieAdapter?.retry() },
+                footer = MovieLoadStateAdapter { movieAdapter?.retry() }
             )
             setHasFixedSize(true)
         }
@@ -140,9 +142,10 @@ class SearchMovieFragment : Fragment(), MovieItemListener {
         navigateToMovieDetail(movie)
     }
 
-    override fun onStop() {
-        super.onStop()
-        binding.rvMovieTv.adapter = null
+    // avoid memory leak
+    override fun onDestroyView() {
+        super.onDestroyView()
+        movieAdapter = null
     }
 
 }

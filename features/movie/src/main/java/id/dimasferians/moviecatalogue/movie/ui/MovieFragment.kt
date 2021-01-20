@@ -16,7 +16,7 @@ import id.dimasferians.moviecatalogue.core.domain.model.Movie
 import id.dimasferians.moviecatalogue.core.ui.movie.MovieItemListener
 import id.dimasferians.moviecatalogue.core.ui.movie.MovieLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.movie.MoviePagingAdapter
-import id.dimasferians.moviecatalogue.core.utils.autoCleared
+import id.dimasferians.moviecatalogue.core.utils.viewBindings
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.movie.databinding.FragmentMovieBinding
 import id.dimasferians.moviecatalogue.movie.di.DaggerMovieComponent
@@ -26,13 +26,13 @@ import javax.inject.Inject
 
 class MovieFragment : Fragment(), MovieItemListener {
 
-    private var binding by autoCleared<FragmentMovieBinding>()
+    private var binding : FragmentMovieBinding by viewBindings()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val movieViewModel: MovieViewModel by viewModels { viewModelFactory }
 
-    private val movieAdapter: MoviePagingAdapter by lazy { MoviePagingAdapter(this) }
+    private var movieAdapter: MoviePagingAdapter? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -64,17 +64,18 @@ class MovieFragment : Fragment(), MovieItemListener {
     private fun initObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             movieViewModel.moviePagingData.collectLatest {
-                movieAdapter.submitData(it)
+                movieAdapter?.submitData(it)
             }
         }
     }
 
     private fun setupRecyclerView() {
+        movieAdapter = MoviePagingAdapter(this)
         binding.layoutMovie.rvMovieTv.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = movieAdapter.withLoadStateHeaderAndFooter(
-                header = MovieLoadStateAdapter { movieAdapter.retry() },
-                footer = MovieLoadStateAdapter { movieAdapter.retry() }
+            layoutManager = LinearLayoutManager(context)
+            adapter = movieAdapter?.withLoadStateHeaderAndFooter(
+                header = MovieLoadStateAdapter { movieAdapter?.retry() },
+                footer = MovieLoadStateAdapter { movieAdapter?.retry() }
             )
             setHasFixedSize(true)
         }
@@ -89,4 +90,9 @@ class MovieFragment : Fragment(), MovieItemListener {
         navigateToMovieDetail(movie)
     }
 
+    // avoid memory leak
+    override fun onDestroyView() {
+        super.onDestroyView()
+        movieAdapter = null
+    }
 }

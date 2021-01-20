@@ -42,4 +42,4 @@ class AutoClearedValue<T : Any>(val fragment: Fragment) : ReadWriteProperty<Frag
 /**
  * Creates an [AutoClearedValue] associated with this fragment.
  */
-fun <T : Any> Fragment.autoCleared() = AutoClearedValue<T>(this)
+fun <T : Any> Fragment.viewBindings() = AutoClearedValue<T>(this)

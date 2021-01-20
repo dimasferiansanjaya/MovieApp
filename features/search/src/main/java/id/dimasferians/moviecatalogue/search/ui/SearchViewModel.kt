@@ -29,6 +29,7 @@ class SearchViewModel @Inject constructor(private val movieUseCase: MovieUseCase
     fun clearData() {
         _liveDataMovie.postValue(PagingData.empty())
         _liveDataTv.postValue(PagingData.empty())
+        setIsEmptyQuery(true)
     }
 
     fun search(query: String) {

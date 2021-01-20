@@ -16,7 +16,7 @@ import id.dimasferians.moviecatalogue.R
 import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowItemListener
-import id.dimasferians.moviecatalogue.core.utils.autoCleared
+import id.dimasferians.moviecatalogue.core.utils.viewBindings
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.core.utils.show
@@ -27,13 +27,13 @@ import javax.inject.Inject
 
 class FavoriteTvFragment : Fragment(), TvShowItemListener {
 
-    private var binding by autoCleared<LayoutMovieTvBinding>()
+    private var binding: LayoutMovieTvBinding by viewBindings()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel: FavoriteViewModel by viewModels { viewModelFactory }
-    private val tvShowAdapter: FavoriteTvShowAdapter by lazy { FavoriteTvShowAdapter(this) }
+    private var tvShowAdapter: FavoriteTvShowAdapter? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -66,7 +66,7 @@ class FavoriteTvFragment : Fragment(), TvShowItemListener {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.favoriteTvShow.collectLatest {
                 if (it.isNotEmpty()) {
-                    tvShowAdapter.setData(it)
+                    tvShowAdapter?.setData(it)
                     binding.layoutEmpty.hide()
                     binding.rvMovieTv.show()
                 } else {
@@ -85,6 +85,7 @@ class FavoriteTvFragment : Fragment(), TvShowItemListener {
     }
 
     private fun setupRecyclerView() {
+        tvShowAdapter = FavoriteTvShowAdapter(this)
         binding.rvMovieTv.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = tvShowAdapter
@@ -104,6 +105,6 @@ class FavoriteTvFragment : Fragment(), TvShowItemListener {
 
     override fun onStop() {
         super.onStop()
-        binding.rvMovieTv.adapter = null
+        tvShowAdapter = null
     }
 }
