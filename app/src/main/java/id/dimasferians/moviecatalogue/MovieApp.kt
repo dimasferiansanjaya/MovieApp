@@ -4,6 +4,7 @@ import android.app.Application
 import id.dimasferians.moviecatalogue.core.di.CoreComponent
 import id.dimasferians.moviecatalogue.core.di.CoreComponentProvider
 import id.dimasferians.moviecatalogue.core.di.DaggerCoreComponent
+import timber.log.Timber
 
 class MovieApp : Application(), CoreComponentProvider {
 
@@ -21,5 +22,12 @@ class MovieApp : Application(), CoreComponentProvider {
 
     override fun provideCoreComponent(): CoreComponent {
         return coreComponent
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 }

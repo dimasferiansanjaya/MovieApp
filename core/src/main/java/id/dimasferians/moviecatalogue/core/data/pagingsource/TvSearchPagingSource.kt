@@ -7,6 +7,7 @@ import id.dimasferians.moviecatalogue.core.data.source.remote.network.ApiRespons
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
 import id.dimasferians.moviecatalogue.core.utils.toListTvShowDomain
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 
 class TvSearchPagingSource(
     private val remoteDataSource: RemoteDataSource,
@@ -42,13 +43,12 @@ class TvSearchPagingSource(
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
+            Timber.e(e.message.toString())
             return LoadResult.Error(e)
         }
     }
 
     companion object {
         const val STARTING_PAGE = 1
-        val TAG: String = TvSearchPagingSource::class.java.simpleName
     }
 }

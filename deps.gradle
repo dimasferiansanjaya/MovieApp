@@ -19,7 +19,8 @@ ext {
             lottie     : '3.6.0',
             leakCanary : '2.6',
             sqliteKtx  : '2.1.0',
-            sqlChiper  : '4.4.0'
+            sqlChiper  : '4.4.0',
+            timber     : '4.7.1'
     ]
 
     deps = [
@@ -92,6 +93,7 @@ ext {
             lottie                  : "com.airbnb.android:lottie:${versions.lottie}",
             kenBurnsView            : "com.flaviofaria:kenburnsview:1.0.7",
             percentageView          : "com.ramijemli.percentagechartview:percentagechartview:0.3.1",
+            timber                  : "com.jakewharton.timber:timber:${versions.timber}",
 
             // Test
             junit                   : "junit:junit:4.13.1",

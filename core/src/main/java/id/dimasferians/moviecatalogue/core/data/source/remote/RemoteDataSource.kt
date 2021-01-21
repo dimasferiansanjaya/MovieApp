@@ -1,6 +1,5 @@
 package id.dimasferians.moviecatalogue.core.data.source.remote
 
-import android.util.Log
 import id.dimasferians.moviecatalogue.core.data.source.remote.network.ApiResponse
 import id.dimasferians.moviecatalogue.core.data.source.remote.network.ApiService
 import id.dimasferians.moviecatalogue.core.data.source.remote.response.ListMovieResponse
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.json.JSONObject
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -43,13 +43,13 @@ class RemoteDataSource @Inject constructor(
                     val errorMessage = JSONObject(it.readText()).getString("status_message")
                     // emit error message
                     emit(ApiResponse.Error(errorMessage))
-                    Log.e(TAG, errorMessage)
+                    Timber.e(errorMessage)
                 }
             }
         }.catch { e ->
             // exception
             emit(ApiResponse.Error(e.message.toString()))
-            Log.e(TAG, e.message.toString())
+            Timber.e(e.message.toString())
         }.flowOn(dispatcher)
     }
 
@@ -74,13 +74,13 @@ class RemoteDataSource @Inject constructor(
                     val errorMessage = JSONObject(it.readText()).getString("status_message")
                     // emit error message
                     emit(ApiResponse.Error(errorMessage))
-                    Log.e(TAG, errorMessage)
+                    Timber.e(errorMessage)
                 }
             }
         }.catch { e ->
             // exception
             emit(ApiResponse.Error(e.message.toString()))
-            Log.e(TAG, e.message.toString())
+            Timber.e(e.message.toString())
         }.flowOn(dispatcher)
     }
 
@@ -105,13 +105,13 @@ class RemoteDataSource @Inject constructor(
                     val errorMessage = JSONObject(it.readText()).getString("status_message")
                     // emit error message
                     emit(ApiResponse.Error(errorMessage))
-                    Log.e(TAG, errorMessage)
+                    Timber.e(errorMessage)
                 }
             }
         }.catch { e ->
             // emit exception
             emit(ApiResponse.Error(e.message.toString()))
-            Log.e(TAG, e.message.toString())
+            Timber.e(e.message.toString())
         }.flowOn(dispatcher)
     }
 
@@ -136,13 +136,13 @@ class RemoteDataSource @Inject constructor(
                     val errorMessage = JSONObject(it.readText()).getString("status_message")
                     // emit error message
                     emit(ApiResponse.Error(errorMessage))
-                    Log.e(TAG, errorMessage)
+                    Timber.e(errorMessage)
                 }
             }
         }.catch { e ->
             // exception
             emit(ApiResponse.Error(e.message.toString()))
-            Log.e(TAG, e.message.toString())
+            Timber.e(e.message.toString())
         }.flowOn(dispatcher)
     }
 
@@ -167,13 +167,13 @@ class RemoteDataSource @Inject constructor(
                     val errorMessage = JSONObject(it.readText()).getString("status_message")
                     // emit error message
                     emit(ApiResponse.Error(errorMessage))
-                    Log.e(TAG, errorMessage)
+                    Timber.e(errorMessage)
                 }
             }
         }.catch { e ->
             // exception
             emit(ApiResponse.Error(e.message.toString()))
-            Log.e(TAG, e.message.toString())
+            Timber.e(e.message.toString())
         }.flowOn(dispatcher)
     }
 
@@ -198,18 +198,14 @@ class RemoteDataSource @Inject constructor(
                     val errorMessage = JSONObject(it.readText()).getString("status_message")
                     // emit error message
                     emit(ApiResponse.Error(errorMessage))
-                    Log.e(TAG, errorMessage)
+                    Timber.e(errorMessage)
                 }
             }
         }.catch { e ->
             // emit exception
             emit(ApiResponse.Error(e.message.toString()))
-            Log.e(TAG, e.message.toString())
+            Timber.e(e.message.toString())
         }.flowOn(dispatcher)
-    }
-
-    companion object {
-        val TAG: String = RemoteDataSource::class.java.simpleName
     }
 
 }

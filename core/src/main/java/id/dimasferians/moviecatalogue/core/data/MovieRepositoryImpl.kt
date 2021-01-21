@@ -1,6 +1,5 @@
 package id.dimasferians.moviecatalogue.core.data
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -20,6 +19,7 @@ import id.dimasferians.moviecatalogue.core.utils.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,7 +32,6 @@ class MovieRepositoryImpl @Inject constructor(
 
     companion object {
         const val TMDB_PAGE_SIZE = 20
-        val TAG: String = MovieRepositoryImpl::class.java.simpleName
     }
 
     // get remote paging data for popular movie
@@ -71,7 +70,7 @@ class MovieRepositoryImpl @Inject constructor(
         }.catch { e ->
             // emit exception
             emit(Resource.Error(e.message.toString()))
-            Log.e(TAG, e.message.toString())
+            Timber.e(e)
         }.flowOn(dispatcher)
     }
 
@@ -139,7 +138,7 @@ class MovieRepositoryImpl @Inject constructor(
         }.catch { e ->
             // emit exception
             emit(Resource.Error(e.message.toString()))
-            Log.e(TAG, e.message.toString())
+            Timber.e(e)
         }.flowOn(dispatcher)
     }
 

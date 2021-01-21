@@ -43,21 +43,22 @@
 -keepclasseswithmembers class * {
     @com.squareup.moshi.* <methods>;
 }
-
 -keep @com.squareup.moshi.JsonQualifier interface *
-
-# Enum field names are used by the integrated EnumJsonAdapter.
-# values() is synthesized by the Kotlin compiler and is used by EnumJsonAdapter indirectly
-# Annotate enums with @JsonClass(generateAdapter = false) to use them with Moshi.
--keepclassmembers @com.squareup.moshi.JsonClass class * extends java.lang.Enum {
-    <fields>;
-    **[] values();
+-dontwarn org.jetbrains.annotations.**
+-keep class kotlin.Metadata { *; }
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
 }
 
-# Keep helper method to avoid R8 optimisation that would keep all Kotlin Metadata when unwanted
--keepclassmembers class com.squareup.moshi.internal.Util {
-    private static java.lang.String getKotlinMetadataClassName();
+-keepclassmembers class * {
+    @com.squareup.moshi.FromJson <methods>;
+    @com.squareup.moshi.ToJson <methods>;
 }
+
+-keepnames @kotlin.Metadata class id.dimasferians.moviecatalogue.core.data.source.remote.response.*
+-keep class id.dimasferians.moviecatalogue.core.data.source.remote.response.* { *; }
+-keepclassmembers class id.dimasferians.moviecatalogue.core.data.source.remote.response.* { *; }
+
 
 
 ##---------------Begin: proguard configuration for Glide  ----------
@@ -72,4 +73,22 @@
 -keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
   *** rewind();
 }
--keep class id.dimasferians.moviecatalogue.core.data.pagingsource.*
+
+### OkHttp3
+
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+
+# OkHttp platform used only on JVM and when Conscrypt dependency is available.
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+-dontwarn org.conscrypt.ConscryptHostnameVerifier
+
+### LeakCanary
+-keep class org.eclipse.mat.** { *; }
+-keep class com.squareup.leakcanary.** { *; }

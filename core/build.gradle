@@ -86,6 +86,7 @@ dependencies {
     // libraries
     api deps.glide
     kapt deps.glideCompiler
+    api deps.timber
 
     // dependency injection
     api deps.dagger

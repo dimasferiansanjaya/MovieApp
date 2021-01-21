@@ -1,12 +1,12 @@
 package id.dimasferians.moviecatalogue.core.data.pagingsource
 
-import android.util.Log
 import androidx.paging.PagingSource
 import id.dimasferians.moviecatalogue.core.data.source.remote.RemoteDataSource
 import id.dimasferians.moviecatalogue.core.data.source.remote.network.ApiResponse
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
 import id.dimasferians.moviecatalogue.core.utils.toListTvShowDomain
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 
 class TvShowPagingSource(private val remoteDataSource: RemoteDataSource) :
     PagingSource<Int, TvShow>() {
@@ -39,14 +39,13 @@ class TvShowPagingSource(private val remoteDataSource: RemoteDataSource) :
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
+            Timber.e(e.message.toString())
             return LoadResult.Error(e)
         }
     }
 
     companion object {
         const val STARTING_PAGE = 1
-        val TAG: String = TvShowPagingSource::class.java.simpleName
     }
 
 }
