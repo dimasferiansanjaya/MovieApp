@@ -18,13 +18,13 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <ImageView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/img_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="128dp"
-            android:contentDescription="@string/add_favorite"
-            android:src="@drawable/ic_not_found"
-            tools:ignore="UnusedResources" />
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/find_people" />
 
         <TextView
             android:id="@+id/message_title"
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="32dp"
             android:gravity="center"
             android:text="@string/oops.."
@@ -59,6 +59,6 @@
         android:orientation="vertical"
         android:paddingTop="10dp"
         android:scrollbars="vertical"
-        tools:listitem="@layout/item_movie_tv" />
+        tools:listitem="@layout/item_movie_tv"/>
 
 </LinearLayout>

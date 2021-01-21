@@ -258,16 +258,18 @@ class DetailFragment : Fragment() {
     }
 
     private fun setGenresChip(genres: List<Genre>) {
-        genres.forEach {
-            val inflater = LayoutInflater.from(binding.genreChipGroup.context)
-            val layoutRes = R.layout.item_genre
-            val parent = binding.genreChipGroup
-            val chip = (inflater.inflate(layoutRes, parent, false) as Chip).apply {
-                text = it.name
-                isCheckable = false
-                isClickable = false
+        if (binding.genreChipGroup.childCount == 0) {
+            genres.forEach {
+                val inflater = LayoutInflater.from(binding.genreChipGroup.context)
+                val layoutRes = R.layout.item_genre
+                val parent = binding.genreChipGroup
+                val chip = (inflater.inflate(layoutRes, parent, false) as Chip).apply {
+                    text = it.name
+                    isCheckable = false
+                    isClickable = false
+                }
+                binding.genreChipGroup.addView(chip)
             }
-            binding.genreChipGroup.addView(chip)
         }
     }
 

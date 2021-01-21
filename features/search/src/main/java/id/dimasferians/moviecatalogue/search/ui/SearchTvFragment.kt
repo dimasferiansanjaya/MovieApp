@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -20,10 +19,10 @@ import id.dimasferians.moviecatalogue.core.domain.model.TvShow
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowItemListener
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowLoadStateAdapter
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowPagingAdapter
-import id.dimasferians.moviecatalogue.core.utils.viewBindings
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.core.utils.show
+import id.dimasferians.moviecatalogue.core.utils.viewBindings
 import id.dimasferians.moviecatalogue.search.di.DaggerSearchComponent
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -37,7 +36,7 @@ class SearchTvFragment : Fragment(), TvShowItemListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: SearchViewModel by activityViewModels {viewModelFactory}
+    private val viewModel: SearchViewModel by activityViewModels { viewModelFactory }
     private var tvAdapter: TvShowPagingAdapter? = null
 
     override fun onAttach(context: Context) {
@@ -61,6 +60,11 @@ class SearchTvFragment : Fragment(), TvShowItemListener {
         initObserver()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.imgEmpty.playAnimation()
+    }
+
     private fun initDependencyInjection() {
         DaggerSearchComponent.factory()
             .create(provideCoreComponent())
@@ -77,20 +81,17 @@ class SearchTvFragment : Fragment(), TvShowItemListener {
 
         // show greeting layout
         viewModel.isEmptyQuery.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.layoutEmpty.show()
-                binding.rvMovieTv.hide()
-                binding.imgEmpty.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.ic_playlist
-                    )
-                )
-                binding.messageTitle.text = getString(R.string.hello)
-                binding.messageValue.text = getString(R.string.find_tv_show)
-            } else {
-                binding.layoutEmpty.hide()
-                binding.rvMovieTv.show()
+            with(binding) {
+                if (it) {
+                    layoutEmpty.show()
+                    rvMovieTv.hide()
+                    imgEmpty.setAnimation(R.raw.find_people)
+                    messageTitle.text = getString(R.string.hello)
+                    messageValue.text = getString(R.string.find_tv_show)
+                } else {
+                    layoutEmpty.hide()
+                    rvMovieTv.show()
+                }
             }
         }
 
@@ -105,12 +106,8 @@ class SearchTvFragment : Fragment(), TvShowItemListener {
                     if (list.isNullOrEmpty()) {
                         binding.layoutEmpty.show()
                         binding.rvMovieTv.hide()
-                        binding.imgEmpty.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_not_found
-                            )
-                        )
+                        binding.imgEmpty.setAnimation(R.raw.page_not_found)
+                        binding.imgEmpty.playAnimation()
                         binding.messageTitle.text = getString(R.string.oops__)
                         binding.messageValue.text = getString(R.string.empty_tv_message)
                     } else {

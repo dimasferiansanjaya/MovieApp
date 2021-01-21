@@ -18,6 +18,13 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val movieUseCase: MovieUseCase) :
     ViewModel() {
 
+    private var _querySearch: String? = null
+    val querySearch get() = _querySearch
+
+    fun setQuery(query: String?) {
+        _querySearch = query
+    }
+
     private val _isEmptyQuery = MutableLiveData(true)
     val isEmptyQuery: LiveData<Boolean>
         get() = _isEmptyQuery
@@ -32,9 +39,11 @@ class SearchViewModel @Inject constructor(private val movieUseCase: MovieUseCase
         setIsEmptyQuery(true)
     }
 
-    fun search(query: String) {
-        searchMovie(query)
-        searchTv(query)
+    fun doSearch() {
+        querySearch?.let {
+            searchMovie(it)
+            searchTv(it)
+        }
     }
 
     /** Movie Section **/
@@ -48,7 +57,6 @@ class SearchViewModel @Inject constructor(private val movieUseCase: MovieUseCase
                 _liveDataMovie.postValue(it)
             }
         }
-
     }
     /** End Movie Section **/
 

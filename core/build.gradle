@@ -26,7 +26,11 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -58,6 +62,7 @@ dependencies {
     // ui
     api deps.material
     api deps.constraint
+    api deps.lottie
 
     // navigation
     api deps.navCommonKtx
@@ -75,6 +80,8 @@ dependencies {
     // database
     api deps.roomKtx
     kapt deps.roomCompiler
+    implementation deps.sqliteKtx
+    implementation deps.sqlChiper
 
     // libraries
     api deps.glide

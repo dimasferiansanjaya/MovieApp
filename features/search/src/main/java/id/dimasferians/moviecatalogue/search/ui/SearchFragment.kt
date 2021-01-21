@@ -69,10 +69,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun initAction() {
+        binding.searchView.setQuery(viewModel.querySearch, false)
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrEmpty()) {
-                    viewModel.search(query)
+                    viewModel.doSearch()
                 }
                 binding.searchView.clearFocus()
                 return false
@@ -84,6 +85,7 @@ class SearchFragment : Fragment() {
                 } else {
                     viewModel.setIsEmptyQuery(false)
                 }
+                viewModel.setQuery(newText)
                 return false
             }
         })

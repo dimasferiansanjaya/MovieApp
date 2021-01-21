@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -16,10 +15,10 @@ import id.dimasferians.moviecatalogue.R
 import id.dimasferians.moviecatalogue.core.databinding.LayoutMovieTvBinding
 import id.dimasferians.moviecatalogue.core.domain.model.TvShow
 import id.dimasferians.moviecatalogue.core.ui.tv.TvShowItemListener
-import id.dimasferians.moviecatalogue.core.utils.viewBindings
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.core.utils.show
+import id.dimasferians.moviecatalogue.core.utils.viewBindings
 import id.dimasferians.moviecatalogue.favorite.di.DaggerFavoriteComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -56,6 +55,11 @@ class FavoriteTvFragment : Fragment(), TvShowItemListener {
         initData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.imgEmpty.playAnimation()
+    }
+
     private fun initDependencyInjection() {
         DaggerFavoriteComponent.factory()
             .create(provideCoreComponent())
@@ -67,19 +71,24 @@ class FavoriteTvFragment : Fragment(), TvShowItemListener {
             viewModel.favoriteTvShow.collectLatest {
                 if (it.isNotEmpty()) {
                     tvShowAdapter?.setData(it)
-                    binding.layoutEmpty.hide()
-                    binding.rvMovieTv.show()
+                    showEmptyLayout(false)
                 } else {
-                    binding.layoutEmpty.show()
-                    binding.rvMovieTv.hide()
-                    binding.imgEmpty.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_playlist
-                        )
-                    )
-                    binding.messageTitle.text = getString(R.string.no_favorite_tv_show)
+                    showEmptyLayout(true)
                 }
+            }
+        }
+    }
+
+    private fun showEmptyLayout(state: Boolean) {
+        with(binding) {
+            if (state) {
+                layoutEmpty.show()
+                rvMovieTv.hide()
+                imgEmpty.setAnimation(R.raw.empty_box)
+                messageTitle.text = getString(R.string.no_favorite_tv_show)
+            } else {
+                layoutEmpty.hide()
+                rvMovieTv.show()
             }
         }
     }
