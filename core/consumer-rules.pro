@@ -1,5 +1,7 @@
 ##---------------Begin: proguard configuration for SQLCipher  ----------
+#noinspection ShrinkerUnresolvedReference
 -keep,includedescriptorclasses class net.sqlcipher.** { *; }
+#noinspection ShrinkerUnresolvedReference
 -keep,includedescriptorclasses interface net.sqlcipher.** { *; }
 
 
@@ -90,5 +92,7 @@
 -dontwarn org.conscrypt.ConscryptHostnameVerifier
 
 ### LeakCanary
+#noinspection ShrinkerUnresolvedReference
 -keep class org.eclipse.mat.** { *; }
+#noinspection ShrinkerUnresolvedReference
 -keep class com.squareup.leakcanary.** { *; }
