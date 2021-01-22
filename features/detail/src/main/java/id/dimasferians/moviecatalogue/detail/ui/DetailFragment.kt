@@ -22,10 +22,10 @@ import com.google.android.material.snackbar.Snackbar
 import id.dimasferians.moviecatalogue.core.BuildConfig
 import id.dimasferians.moviecatalogue.core.data.Resource
 import id.dimasferians.moviecatalogue.core.domain.model.*
-import id.dimasferians.moviecatalogue.core.utils.viewBindings
 import id.dimasferians.moviecatalogue.core.utils.hide
 import id.dimasferians.moviecatalogue.core.utils.provideCoreComponent
 import id.dimasferians.moviecatalogue.core.utils.show
+import id.dimasferians.moviecatalogue.core.utils.viewBindings
 import id.dimasferians.moviecatalogue.detail.R
 import id.dimasferians.moviecatalogue.detail.databinding.FragmentDetailBinding
 import id.dimasferians.moviecatalogue.detail.di.DaggerDetailComponent
@@ -39,7 +39,6 @@ class DetailFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: DetailViewModel by viewModels { viewModelFactory }
-//    private val args: DetailFragmentArgs by navArgs()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -94,7 +93,7 @@ class DetailFragment : Fragment() {
                     binding.loading.hide()
                     state.data?.let {
                         renderMovieView(it)
-                        setShareButton(it.title)
+                        setShareButton(it.title, "movie", it.id)
                     }
                 }
                 is Resource.Error -> {
@@ -116,7 +115,7 @@ class DetailFragment : Fragment() {
                     binding.loading.hide()
                     state.data?.let {
                         renderTvView(it)
-                        setShareButton(it.name)
+                        setShareButton(it.name, "tv", it.id)
                     }
                 }
                 is Resource.Error -> {
@@ -273,9 +272,9 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun setShareButton(title: String) {
+    private fun setShareButton(title: String, types: String, id: Int) {
         binding.btnShare.setOnClickListener {
-            val shareMsg = getString(R.string.share_message, title)
+            val shareMsg = getString(R.string.share_message, title, types, id)
             val intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 type = "text/plain"

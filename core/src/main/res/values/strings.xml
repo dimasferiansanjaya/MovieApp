@@ -31,6 +31,6 @@
     <string name="status_label">STATUS</string>
     <string name="no_overview">No overview.</string>
 
-    <string name="share_message">\"%s\" \n\nVisit: https://www.themoviedb.org/</string>
+    <string name="share_message">\"%s\" \n\nVisit: https://www.themoviedb.org/%s/%d</string>
 
 </resources>

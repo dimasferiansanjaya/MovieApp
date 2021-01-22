@@ -1,6 +1,5 @@
 package id.dimasferians.moviecatalogue.core.data.pagingsource
 
-import android.util.Log
 import androidx.paging.PagingSource
 import id.dimasferians.moviecatalogue.core.data.source.remote.RemoteDataSource
 import id.dimasferians.moviecatalogue.core.data.source.remote.network.ApiResponse
