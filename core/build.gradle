@@ -74,8 +74,7 @@ dependencies {
     // network
     implementation deps.retrofit
     implementation deps.retrofitMoshi
-    api deps.okHttp
-    debugImplementation deps.okHttpLoggingInterceptor
+    implementation deps.okHttpLoggingInterceptor
 
     // database
     api deps.roomKtx
